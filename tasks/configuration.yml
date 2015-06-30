@@ -18,44 +18,50 @@
 # limitations under the License.
 #
 
-- name: Configure Keystone
-  ini_file: >
+- name: Configure keystone
+  ini_file:
     dest=/etc/keystone/keystone.conf
-    section="{{ item.section }}"
-    option="{{ item.option }}"
-    value="{{ item.value }}"
+    section={{ item.section }}
+    option={{ item.option }}
+    value={{ item.value }}
   with_items:
-    - section:  DEFAULT
-      option:   admin_token
-      value:    "{{ keystone_admin_token }}"
-    - section:  DEFAULT
-      option:   log_dir
-      value:    "{{ keystone_log_dir }}"
-    - section:  DEFAULT
-      option:   admin_bind_host
-      value:    "{{ keystone_admin_bind_host }}"
-    - section:  DEFAULT
-      option:   admin_port
-      value:    "{{ keystone_admin_port }}"
-    - section:  DEFAULT
-      option:   public_bind_host
-      value:    "{{ keystone_bind_host }}"
-    - section:  DEFAULT
-      option:   public_port
-      value:    "{{ keystone_port }}"
-  notify:
-    - Restart Keystone
+    - section:   DEFAULT
+      option:    admin_token
+      value:     "{{ keystone_admin_token }}"
+    - section:   database
+      option:    connection
+      value:     "{{ keystone_database_url }}"
+    - section:   memcache
+      option:    servers
+      value:     "{{ keystone_memcache_server }}"
+    - section:   token
+      option:    provider
+      value:     keystone.token.providers.uuid.Provider
+    - section:   token
+      option:    driver
+      value:     keystone.token.persistence.backends.memcache.Token
+    - section:   revoke
+      option:    driver
+      value:     keystone.contrib.revoke.backends.sql.Revoke
+  register: keystone_configured
 
-- name: Configure Keystone database
-  ini_file: >
+- name: Configure keystone to be verbose
+  when: keystone_verbose
+  ini_file:
     dest=/etc/keystone/keystone.conf
-    section="{{ item.section }}"
-    option="{{ item.option }}"
-    value="{{ item.value }}"
-  with_items:
-    - section: database
-      option: connection
-      value: "{{ keystone_database_url }}"
-  notify:
-    - Sync Keystone database
-    - Restart Keystone
+    section=DEFAULT
+    option=verbose
+    value=True
+  register: keystone_set_to_verbose
+
+
+- name: Sync Keystone database
+  shell: sudo su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+  # command: keystone-manage db_sync
+  # sudo: yes
+  # sudo_user: keystone
+  # retries: "{{ keystone_api_retries }}"
+  # delay: "{{ keystone_api_retries_delay }}"
+  # when: keystone_configured.changed
+  # when: keystone_set_to_verbose.changed

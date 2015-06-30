@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
-- name: Install keystone service and client
+- name: Disable keystone service from starting automatically
+  lineinfile: dest=/etc/init/keystone.override create=yes line="manual"
+
+- name: Install keystone-related packages
   apt: name="{{ item }}" state=present
   with_items:
     - keystone
@@ -26,5 +29,4 @@
     - libapache2-mod-wsgi
     - memcached
     - python-memcache
-
-
+    - python-mysqldb
