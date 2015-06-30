@@ -1,0 +1,51 @@
+---
+
+- name: WSGI Tell apache to use the hostname as the servername
+  lineinfile:
+    dest=/etc/apache2/apache2.conf
+    line="ServerName {{ ansible_hostname }}"
+
+- name: WSGI Create the WSGI Keystone configuration file
+  template:
+    src=wsgi-keystone.conf
+    dest=/etc/apache2/sites-available/wsgi-keystone.conf
+
+- name: WSGI Enable the identity service virtual hosts
+  file:
+    src=/etc/apache2/sites-available/{{ item.name }}
+    dest=/etc/apache2/sites-enabled/{{ item.name }}
+    state=link
+  with_items:
+    - name: wsgi-keystone.conf
+
+- name: WSGI Setup directory structure
+  file:
+    path={{ keystone.cgibin.dir }}
+    state=directory
+
+- name: WSGI copy the components from the upstream repository
+  get_url:
+    url="{{ keystone.cgibin.upstream_wsgi_components }}"
+    dest={{ keystone.cgibin.dir }}/{{ item }}
+  with_items:
+    - main
+    - admin
+
+- name: WSGI Fix ownership and permissions
+  file:
+    path={{ keystone.cgibin.dir }}
+    owner=keystone
+    group=keystone
+    mode=0755
+    recurse=yes
+
+
+- name: WSGI Restart webserver
+  service:
+    name={{ webserver_service }}
+    state=stopped
+
+- name: WSGI Restart webserver
+  service:
+    name={{ webserver_service }}
+    state=started
