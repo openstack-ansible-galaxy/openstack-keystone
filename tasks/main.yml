@@ -33,9 +33,10 @@
     host={{ keystone_hostname }}
     port={{ keystone_admin_port }}
 
+- include: maintenance.yml
+
 - include: wsgi.yml
 - include: endpoints.yml
 - include: tenants.yml
 - include: users.yml
 - include: roles.yml
-- include: maintenance.yml
