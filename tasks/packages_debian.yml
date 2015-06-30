@@ -22,4 +22,9 @@
   with_items:
     - keystone
     - python-keystoneclient
+    - apache2
+    - libapache2-mod-wsgi
+    - memcached
+    - python-memcache
+
 
