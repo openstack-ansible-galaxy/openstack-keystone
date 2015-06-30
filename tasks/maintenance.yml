@@ -31,3 +31,9 @@
   file:
     path=/var/lib/keystone/keystone.db
     state=absent
+
+- name: MAIN Remove the temporary auth token mechanism
+  lineinfile:
+    dest=/etc/keystone/keystone-paste.ini
+    regexp=' admin_token_auth '
+    state=absent
