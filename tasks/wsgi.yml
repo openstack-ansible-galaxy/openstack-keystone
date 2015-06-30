@@ -40,12 +40,21 @@
     recurse=yes
 
 
-- name: WSGI Restart webserver
+# the particular ordering below is critical.  keystone must be started
+# AFTER apache is reloaded in order to use WSGI
+
+
+- name: WSGI Stop keystone
   service:
-    name={{ webserver_service }}
+    name={{ keystone_service }}
     state=stopped
 
 - name: WSGI Restart webserver
   service:
     name={{ webserver_service }}
+    state=started
+
+- name: WSGI Start keystone
+  service:
+    name={{ keystone_service }}
     state=started
