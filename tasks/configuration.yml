@@ -43,7 +43,7 @@
     - section:   revoke
       option:    driver
       value:     keystone.contrib.revoke.backends.sql.Revoke
-  register: keystone_configured
+  notify: Sync Keystone database
 
 - name: Configure keystone to be verbose
   when: keystone_verbose
@@ -52,16 +52,5 @@
     section=DEFAULT
     option=verbose
     value=True
-  register: keystone_set_to_verbose
+  notify: Sync Keystone database
 
-
-- name: Sync Keystone database
-  shell: sudo su -s /bin/sh -c "keystone-manage db_sync" keystone
-
-  # command: keystone-manage db_sync
-  # sudo: yes
-  # sudo_user: keystone
-  # retries: "{{ keystone_api_retries }}"
-  # delay: "{{ keystone_api_retries_delay }}"
-  # when: keystone_configured.changed
-  # when: keystone_set_to_verbose.changed
