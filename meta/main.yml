@@ -7,7 +7,6 @@ galaxy_info:
   min_ansible_version: 1.7
   categories:
     - cloud
-  dependencies: []
   platforms:
     - name: Ubuntu
       versions:
@@ -20,4 +19,5 @@ galaxy_info:
       versions:
         - 6
         - 7
+dependencies: []
 
