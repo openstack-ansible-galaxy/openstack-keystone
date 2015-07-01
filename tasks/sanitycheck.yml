@@ -1,0 +1,81 @@
+---
+
+#
+# Copyright (c) 2015 Badi' Abdul-Wahid <abdulwahidc@gmail.com>
+#
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+# implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+- name: SANITY CHECK Request auth token as admin
+  shell: >-
+    openstack
+    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-project-name admin
+    --os-username admin
+    --os-auth-type password
+    --os-password {{ keystone_admin_password }}
+    token issue
+  register: token_test
+- debug: var=token_test.stdout_lines
+
+- name: SANITY CHECK Try with domain
+  shell: >-
+    openstack
+    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-project-domain-id default
+    --os-user-domain-id default
+    --os-project-name admin
+    --os-username admin
+    --os-auth-type password
+    --os-password {{ keystone_admin_password }}
+    token issue
+  register: domain_test
+- debug: var=domain_test.stdout_lines
+
+- name: SANITY CHECK Admin user has correct privileges
+  shell: >-
+    openstack
+    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-project-name admin
+    --os-username admin
+    --os-auth-type password
+    --os-password {{ keystone_admin_password }}
+    project list
+  register: admin_test
+- debug: var=admin_test.stdout_lines
+
+- name: SANITY CHECK List users
+  shell: >-
+    openstack
+    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-project-name admin
+    --os-username admin
+    --os-auth-type password
+    --os-password {{ keystone_admin_password }}
+    user list
+  register: userlist_test
+- debug: var=userlist_test.stdout_lines
+
+- name: SANITY CHECK List roles
+  shell: >-
+    openstack
+    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-project-name admin
+    --os-username admin
+    --os-auth-type password
+    --os-password {{ keystone_admin_password }}
+    role list
+  register: rolelist_test
+- debug: var=rolelist_test.stdout_lines

@@ -38,3 +38,4 @@
 - include: users.yml
 - include: roles.yml
 - include: cleanup.yml
+- include: sanitycheck.yml
