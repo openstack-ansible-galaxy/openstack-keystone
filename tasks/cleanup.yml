@@ -1,8 +1,7 @@
 ---
 
 #
-# Copyright (c) 2015 Davide Guerri <davide.guerri@gmail.com>
-#
+# Copyright (c) 2015 Badi' Abdul-Wahid <adbulwahidc@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,23 +17,12 @@
 # limitations under the License.
 #
 
-- meta: flush_handlers
-
-- include: facts.yml
-- include: packages.yml
-- include: configuration.yml
-- include: wsgi.yml
-
-- meta: flush_handlers
-
-- name: Ensure that the Keystone service is stopped
-  service:
-    name={{ keystone_service }}
-    state=stopped
-
-- include: maintenance.yml
-- include: endpoints.yml
-- include: tenants.yml
-- include: users.yml
-- include: roles.yml
-- include: cleanup.yml
+- name: CLEANUP Disable authentication token mechanism
+  replace:
+    dest="/etc/keystone/keystone-paste.ini"
+    regexp="^(\[{{ item }}\]\n(?:[#][\S\t ]*\n)*pipeline[ ]*=[ ]*[\S\t ]*)admin_token_auth[\t ]*([\S\t ]*)$"
+    replace="\1\2"
+  with_items:
+    - "pipeline:public_api"
+    - "pipeline:admin_api"
+    - "pipeline:api_v3"
