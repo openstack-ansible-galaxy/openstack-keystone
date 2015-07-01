@@ -23,6 +23,7 @@
 - include: facts.yml
 - include: packages.yml
 - include: configuration.yml
+- include: wsgi.yml
 
 - meta: flush_handlers
 
@@ -35,7 +36,6 @@
 
 - include: maintenance.yml
 
-- include: wsgi.yml
 - include: endpoints.yml
 - include: tenants.yml
 - include: users.yml
