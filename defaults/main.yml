@@ -38,6 +38,10 @@ keystone_default_region: regionOne
 # Database
 keystone_database_url: sqlite:////var/lib/keystone/keystone.db
 
+# Memcached
+keystone_memcached_servers:
+  - "localhost"
+
 # Misc
 keystone_api_retries: 3
 keystone_api_retries_delay: 5

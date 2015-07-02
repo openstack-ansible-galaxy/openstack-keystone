@@ -33,7 +33,7 @@
       value:     "{{ keystone_database_url }}"
     - section:   memcache
       option:    servers
-      value:     "{{ keystone_memcache_server }}"
+      value:     "{{ ','.join(keystone_memcached_servers) }}"
     - section:   token
       option:    provider
       value:     keystone.token.providers.uuid.Provider
