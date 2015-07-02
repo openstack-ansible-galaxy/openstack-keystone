@@ -25,9 +25,11 @@
     option="{{ item.option }}"
     value="{{ item.value }}"
   with_items:
+
     - section:   DEFAULT
       option:    admin_token
       value:     "{{ keystone_admin_token }}"
+
     - section:   DEFAULT
       option:    log_dir
       value:     "{{ keystone_log_dir }}"
@@ -35,18 +37,23 @@
     - section:   database
       option:    connection
       value:     "{{ keystone_database_url }}"
+
     - section:   memcache
       option:    servers
       value:     "{{ ','.join(keystone_memcached_servers) }}"
+
     - section:   token
       option:    provider
       value:     keystone.token.providers.uuid.Provider
+
     - section:   token
       option:    driver
       value:     keystone.token.persistence.backends.memcache.Token
+
     - section:   revoke
       option:    driver
       value:     keystone.contrib.revoke.backends.sql.Revoke
+
   notify: Sync Keystone database
 
 - name: Configure keystone to be verbose
