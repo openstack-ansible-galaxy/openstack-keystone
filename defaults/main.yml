@@ -45,3 +45,4 @@ keystone_memcached_servers:
 # Misc
 keystone_api_retries: 3
 keystone_api_retries_delay: 5
+keystone_verbose: no
