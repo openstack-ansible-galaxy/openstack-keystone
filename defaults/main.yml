@@ -33,7 +33,7 @@ keystone_users: []
 keystone_roles: []
 keystone_services: []
 keystone_endpoints: []
-keystone_default_region: regionOne
+keystone_default_region: RegionOne
 
 # Database
 keystone_database_url: sqlite:////var/lib/keystone/keystone.db
