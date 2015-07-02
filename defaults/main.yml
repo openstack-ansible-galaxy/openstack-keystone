@@ -55,3 +55,4 @@ keystone_api_version: v2.0
 keystone_api_retries: 3
 keystone_api_retries_delay: 5
 keystone_verbose: no
+keystone_run_sanity_check: no

@@ -39,3 +39,4 @@
 - include: roles.yml
 - include: cleanup.yml
 - include: sanitycheck.yml
+  when: keystone_run_sanity_check
