@@ -19,6 +19,7 @@
 #
 
 - name: MAINT Remove the default keystone sqlite database
+  when: keystone_remove_sqlite_db
   file:
     path=/var/lib/keystone/keystone.db
     state=absent

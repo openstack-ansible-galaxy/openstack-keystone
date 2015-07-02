@@ -37,6 +37,7 @@ keystone_default_region: RegionOne
 
 # Database
 keystone_database_url: sqlite:////var/lib/keystone/keystone.db
+keystone_remove_sqlite_db: no
 
 # Memcached
 keystone_memcached_servers:
