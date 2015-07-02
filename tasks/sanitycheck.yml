@@ -25,7 +25,7 @@
     --os-project-name admin
     --os-username admin
     --os-auth-type password
-    --os-password {{ keystone_admin_password }}
+    --os-password "{{ keystone_admin_password }}"
     token issue
   register: token_test
 - debug: var=token_test.stdout_lines
@@ -39,7 +39,7 @@
     --os-project-name admin
     --os-username admin
     --os-auth-type password
-    --os-password {{ keystone_admin_password }}
+    --os-password "{{ keystone_admin_password }}"
     token issue
   register: domain_test
 - debug: var=domain_test.stdout_lines
@@ -51,7 +51,7 @@
     --os-project-name admin
     --os-username admin
     --os-auth-type password
-    --os-password {{ keystone_admin_password }}
+    --os-password "{{ keystone_admin_password }}"
     project list
   register: admin_test
 - debug: var=admin_test.stdout_lines
@@ -63,7 +63,7 @@
     --os-project-name admin
     --os-username admin
     --os-auth-type password
-    --os-password {{ keystone_admin_password }}
+    --os-password "{{ keystone_admin_password }}"
     user list
   register: userlist_test
 - debug: var=userlist_test.stdout_lines
@@ -75,7 +75,7 @@
     --os-project-name admin
     --os-username admin
     --os-auth-type password
-    --os-password {{ keystone_admin_password }}
+    --os-password "{{ keystone_admin_password }}"
     role list
   register: rolelist_test
 - debug: var=rolelist_test.stdout_lines
