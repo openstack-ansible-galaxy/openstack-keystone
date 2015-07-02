@@ -28,6 +28,7 @@
     --os-password "{{ keystone_admin_password }}"
     token issue
   register: token_test
+  changed_when: token_test.rc != 0
 - debug: var=token_test.stdout_lines
 
 - name: SANITY CHECK Try with domain
@@ -42,6 +43,7 @@
     --os-password "{{ keystone_admin_password }}"
     token issue
   register: domain_test
+  changed_when: domain_test.rc != 0
 - debug: var=domain_test.stdout_lines
 
 - name: SANITY CHECK Admin user has correct privileges
@@ -54,6 +56,7 @@
     --os-password "{{ keystone_admin_password }}"
     project list
   register: admin_test
+  changed_when: admin_test.rc != 0
 - debug: var=admin_test.stdout_lines
 
 - name: SANITY CHECK List users
@@ -66,6 +69,7 @@
     --os-password "{{ keystone_admin_password }}"
     user list
   register: userlist_test
+  changed_when: userlist_test.rc != 0
 - debug: var=userlist_test.stdout_lines
 
 - name: SANITY CHECK List roles
@@ -78,4 +82,5 @@
     --os-password "{{ keystone_admin_password }}"
     role list
   register: rolelist_test
+  changed_when: rolelist_test.rc != 0
 - debug: var=rolelist_test.stdout_lines
