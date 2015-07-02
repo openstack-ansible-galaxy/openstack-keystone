@@ -29,10 +29,6 @@
   delay: "{{ keystone_api_retries_delay }}"
 
 - name: Use WSGI
-  # the particular ordering below is critical. Keystone must be
-  # started AFTER apache is reloaded in order to use WSGI otherwise it
-  # defaults to the eventlet and still claims the ports, causing the
-  # webserver to fail on reload
   service: name={{ keystone_service }} state=stopped
   service: name={{ webserver_service }} state=restarted
 
