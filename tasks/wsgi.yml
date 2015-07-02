@@ -5,7 +5,7 @@
 - name: WSGI Tell apache to use the hostname as the servername
   lineinfile:
     dest=/etc/apache2/apache2.conf
-    line="ServerName {{ ansible_hostname }}"
+    line="ServerName {{ keystone_hostname }}"
 
 - name: WSGI Create the WSGI Keystone configuration file
   template:
@@ -24,20 +24,20 @@
 
 - name: WSGI Setup directory structure
   file:
-    path={{ keystone.cgibin.dir }}
+    path={{ keystone_cgibin_dir }}
     state=directory
 
 - name: WSGI copy the components from the upstream repository
   get_url:
-    url="{{ keystone.cgibin.upstream_wsgi_components }}"
-    dest={{ keystone.cgibin.dir }}/{{ item }}
+    url="{{ keystone_upstream_wsgi_components }}"
+    dest={{ keystone_cgibin_dir }}/{{ item }}
   with_items:
-    - main
-    - admin
+    - "{{ keystone_wsgi_main_name }}"
+    - "{{ keystone_wsgi_admin_name }}"
 
 - name: WSGI Fix ownership and permissions
   file:
-    path={{ keystone.cgibin.dir }}
+    path={{ keystone_cgibin_dir }}
     owner=keystone
     group=keystone
     mode=0755
