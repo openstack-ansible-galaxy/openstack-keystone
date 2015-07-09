@@ -29,7 +29,11 @@
   delay: "{{ keystone_api_retries_delay }}"
 
 - name: Use WSGI
-  service: name={{ keystone_service }} state=stopped
+  service: name={{ keystone_service }} state=stopped 
   service: name={{ webserver_service }} state=restarted
 
+- name: Enable Memcached
+  service: name={{ memcached_service }} enabled=yes
 
+- name: Start Memcached
+  service: name={{ memcached_service }} state=restarted
