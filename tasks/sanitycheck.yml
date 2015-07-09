@@ -21,7 +21,7 @@
 - name: SANITY CHECK Request auth token as admin
   shell: >-
     openstack
-    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
     --os-project-name admin
     --os-username admin
     --os-auth-type password
@@ -34,7 +34,7 @@
 - name: SANITY CHECK Try with domain
   shell: >-
     openstack
-    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
     --os-project-domain-id default
     --os-user-domain-id default
     --os-project-name admin
@@ -49,7 +49,7 @@
 - name: SANITY CHECK Admin user has correct privileges
   shell: >-
     openstack
-    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
     --os-project-name admin
     --os-username admin
     --os-auth-type password
@@ -62,7 +62,7 @@
 - name: SANITY CHECK List users
   shell: >-
     openstack
-    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
     --os-project-name admin
     --os-username admin
     --os-auth-type password
@@ -75,7 +75,7 @@
 - name: SANITY CHECK List roles
   shell: >-
     openstack
-    --os-auth-url http://{{ ansible_hostname }}:35357
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
     --os-project-name admin
     --os-username admin
     --os-auth-type password
