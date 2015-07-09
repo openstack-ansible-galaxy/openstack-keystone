@@ -32,3 +32,7 @@
   notify:
     - Enable Memcached
     - Start Memcached
+    - Enable Apache
+    - Start Apache
+
+- meta: flush_handlers

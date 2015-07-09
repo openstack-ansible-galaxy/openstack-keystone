@@ -54,7 +54,9 @@
       option:    driver
       value:     keystone.contrib.revoke.backends.sql.Revoke
 
-  notify: Sync Keystone database
+  notify:
+    - Sync Keystone database
+    - Start Apache
 
 - name: Configure keystone to be verbose
   when: keystone_verbose
@@ -64,5 +66,7 @@
     option=verbose
     value=True
   when: keystone_verbose
-  notify: Sync Keystone database
+  notify:
+    - Sync Keystone database
+    - Start Apache
 
