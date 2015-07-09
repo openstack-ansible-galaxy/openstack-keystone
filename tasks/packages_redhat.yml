@@ -28,6 +28,7 @@
     - memcached
     - python-memcached
     - MySQL-python
+    - openstack-selinux
   notify:
     - Enable Memcached
     - Start Memcached
