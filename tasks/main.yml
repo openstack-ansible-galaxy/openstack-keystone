@@ -36,6 +36,10 @@
 - include: maintenance.yml
 
 - include: endpoints.yml
+  when: keystone_boostrap
 - include: tenants.yml
+  when: keystone_boostrap
 - include: users.yml
+  when: keystone_boostrap
 - include: roles.yml
+  when: keystone_boostrap
