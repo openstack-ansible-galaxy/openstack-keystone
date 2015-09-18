@@ -37,4 +37,3 @@
   delay: "{{ keystone_api_retries_delay }}"
   notify:
     - Restart Keystone
-
