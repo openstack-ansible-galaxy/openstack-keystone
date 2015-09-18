@@ -1,4 +1,3 @@
-
 Keystone OpenStack Ansible Role
 =========
 
@@ -10,7 +9,6 @@ Keystone OpenStack Ansible Role
 OpenStack Keystone identity service installation.
 
 _Tested on Ubuntu Precise (12.04) and Trusty (14.04)_ with Juno.
-
 
 Requirements
 ------------
@@ -39,7 +37,6 @@ Role Variables
 | `keystone_endpoints` | `[ ]` | Array of hash with role: `service_name`, `region`, `public_url`, `internal_url` and `admin_url` (see examples) |
 | `keystone_log_dir` | `/var/log/keystone` | Keystone log directory (it must exists) |
 | `keystone_hostname` | `localhost` | Hostname/IP used internally during configuration. localhost is usually ok |
-
 
 Dependencies
 ------------
