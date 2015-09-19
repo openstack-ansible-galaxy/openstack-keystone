@@ -1,46 +1,23 @@
----
 language: python
-python: "2.7"
-
-
+python: '2.7'
 before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get install python-software-properties
-  - sudo add-apt-repository -y cloud-archive:icehouse
-  - sudo apt-get update -qq
-
-
+- sudo apt-get install python-software-properties
+- sudo add-apt-repository -y cloud-archive:icehouse
+- sudo apt-get update -qq
 install:
-  # Install Ansible.
-  - pip install ansible
-  # Install Keystone client
-  - sudo apt-get install -y python-keystoneclient
-
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-
-
+- pip install ansible
+- sudo apt-get install -y python-keystoneclient
+- '{ echo ''[defaults]''; echo ''roles_path = ../''; } >> ansible.cfg'
 script:
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
-
-  # Run the role/playbook with ansible-playbook.
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local
-    --sudo
-
-  # Test role idempotency
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local
-    --sudo | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
-
-  # Test Keystone setup
-  - >
-    keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0
-    service-list | grep keystone
-
-  - >
-    keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0
-    endpoint-list
+- ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+- |
+  ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+- |
+  ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
+- |
+  keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0 service-list | grep keystone
+- |
+  keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0 endpoint-list
+notifications:
+  slack:
+    secure: I8WmBxA2V5wgnmPPGzNd95vperWgKwRusoSZSTogdSu00bbogUxxqdnlkDKX7/GYpF/2WJMahX51pLzYTa82uIbnjyr9xScUPdDntw31t1c7S98yvt3Ke2U+73rL/vULyH/k8T9Z+98v8vHSjLDV3JwhUO9VK7GsdMtaf/sE8yEtpJbvHS7NTo0mZqCQ7O0XNbYAWQP+GeSyuok+K4G++WNEIOLleaxT4u84pkEvbgD9gwvgwai9qkQDnVhegxbVi4/pgBs5Pk1nqa9zqXOZu/n6R0TrkYdJxHArin9z0WMSxP+cmkyApxPFJ4J6xJO2TEeAyi99Az8+7xs1mR14G9ftLNGDYWPShzeyrdZo86oVOEJvF6wF8w+CZh+dQ5ciaXAzJITzk+p6DQ5HYzCIcpXbMUzH78uMEqezIhmgh2fYerch13ofrjgcfmyanKjROR0USbOZx2EFMXvBGDpu2n1wcOxaT+Acd7SNwA0IdoYvtGnssrIqnbbrE5kpx6qUL+PK4Z5Rhtd0770ZiVUncijMseI84U/PDmTjPw98F4GX2dEfD5lhFQH0wfSzFk/gQN0HfslJsmkLhZpWAGM1IfQlPzgd8dcsA0dwhFcyNgRL/HcQMPK1f88y9QmSBY6VbHood1mMD0GSN5vQeBFS9NOlNSJPvMNT6UYGRoaN++0=
