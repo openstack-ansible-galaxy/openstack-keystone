@@ -28,12 +28,8 @@
   service: name={{ keystone_service }} state=restarted
 
 - name: Sync Keystone database
-  command: keystone-manage db_sync
+  keystone_manage: action=db_sync
   sudo: yes
   sudo_user: keystone
-  register: result
-  until: not result|failed
-  retries: "{{ keystone_api_retries }}"
-  delay: "{{ keystone_api_retries_delay }}"
   notify:
     - Restart Keystone
