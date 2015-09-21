@@ -41,4 +41,4 @@ keystone_database_url: sqlite:////var/lib/keystone/keystone.db
 # Misc
 keystone_api_retries: 3
 keystone_api_retries_delay: 5
-keystone_boostrap: true
+keystone_bootstrap: true
