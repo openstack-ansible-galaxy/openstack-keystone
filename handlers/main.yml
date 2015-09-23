@@ -18,12 +18,6 @@
 # limitations under the License.
 #
 
-- name: Start Keystone
-  service: name={{ keystone_service }} state=started
-
-- name: Reload Keystone
-  service: name={{ keystone_service }} state=reloaded
-
 - name: Restart Keystone
   service: name={{ keystone_service }} state=restarted
 
