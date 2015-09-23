@@ -19,7 +19,7 @@
 #
 
 - name: Restart Keystone
-  service: name={{ keystone_service }} state=restarted
+  service: name={{ keystone_service }} state=restarted enabled=yes
 
 - name: Sync Keystone database
   keystone_manage: action=db_sync
