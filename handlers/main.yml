@@ -18,14 +18,8 @@
 # limitations under the License.
 #
 
-- name: Start Keystone
-  service: name={{ keystone_service }} state=started
-
-- name: Reload Keystone
-  service: name={{ keystone_service }} state=reloaded
-
 - name: Restart Keystone
-  service: name={{ keystone_service }} state=restarted
+  service: name={{ keystone_service }} state=restarted enabled=yes
 
 - name: Sync Keystone database
   keystone_manage: action=db_sync
