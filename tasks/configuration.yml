@@ -32,6 +32,12 @@
       option:   log_dir
       value:    "{{ keystone_log_dir }}"
     - section:  DEFAULT
+      option:   debug
+      value:    "{{ keystone_log_debug }}"
+    - section:  DEFAULT
+      option:   verbose
+      value:    "{{ keystone_log_verbose }}"
+    - section:  DEFAULT
       option:   admin_bind_host
       value:    "{{ keystone_admin_bind_host }}"
     - section:  DEFAULT

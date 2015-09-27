@@ -28,6 +28,8 @@ keystone_bind_host: 0.0.0.0
 keystone_port: 5000
 keystone_protocol: http
 keystone_log_dir: /var/log/keystone
+keystone_log_debug: False
+keystone_log_verbose: False
 keystone_tenants: []
 keystone_users: []
 keystone_roles: []
