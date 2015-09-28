@@ -23,7 +23,7 @@ Role Variables
 
 | Name | Default value | Description |
 |---  |---  |---  |
-| `keystone_database_url` | `sqlite:////var/lib/keystone/keystone.db` | Database URI |
+| `keystone_database_url` | `sqlite:////var/lib/keystone/keystone.sqlite` | Database URI |
 | `keystone_admin_bind_host` | `0.0.0.0` | On which IP Keystone admin service should listen on |
 | `keystone_admin_port` | `35357` | Desired Keystone admin service port |
 | `keystone_bind_host` | `0.0.0.0` | On which IP Keystone public service should listen on |
