@@ -38,7 +38,7 @@ keystone_endpoints: []
 keystone_default_region: regionOne
 
 # Database
-keystone_database_url: sqlite:////var/lib/keystone/keystone.db
+keystone_database_url: sqlite:////var/lib/keystone/keystone.sqlite
 
 # Misc
 keystone_api_retries: 3
