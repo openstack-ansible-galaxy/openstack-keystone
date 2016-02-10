@@ -7,6 +7,7 @@ dist: trusty
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get install -y software-properties-common
+  - sudo apt-get install -y ubuntu-cloud-keyring
   - sudo add-apt-repository -y cloud-archive:kilo
   - sudo apt-get update -qq
 
