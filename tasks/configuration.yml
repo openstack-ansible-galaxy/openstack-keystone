@@ -65,7 +65,6 @@
     section=DEFAULT
     option=verbose
     value=True
-  when: keystone_verbose
   notify:
     - Sync Keystone database
     - Start Apache
