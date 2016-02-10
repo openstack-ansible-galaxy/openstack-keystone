@@ -23,8 +23,8 @@
 
 - name: Sync Keystone database
   command: keystone-manage db_sync
-  sudo: yes
-  sudo_user: keystone
+  become: yes
+  become_user: keystone
   retries: "{{ keystone_api_retries }}"
   delay: "{{ keystone_api_retries_delay }}"
 
