@@ -33,11 +33,27 @@ keystone_users: []
 keystone_roles: []
 keystone_services: []
 keystone_endpoints: []
-keystone_default_region: regionOne
+keystone_default_region: RegionOne
 
 # Database
 keystone_database_url: sqlite:////var/lib/keystone/keystone.db
+keystone_remove_sqlite_db: no
+
+# Memcached
+keystone_memcached_servers:
+  - "localhost"
+
+# WSGI
+keystone_cgibin_dir: /var/www/cgi-bin/keystone
+keystone_wsgi_main_name: main
+keystone_wsgi_admin_name: admin
+keystone_upstream_wsgi_components:
+  "http://git.openstack.org/cgit/openstack/keystone/plain/httpd/\
+  keystone.py?h=stable/kilo"
 
 # Misc
+keystone_api_version: v2.0
 keystone_api_retries: 3
 keystone_api_retries_delay: 5
+keystone_verbose: no
+keystone_run_sanity_check: no

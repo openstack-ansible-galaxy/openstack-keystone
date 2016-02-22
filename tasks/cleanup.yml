@@ -1,7 +1,7 @@
 ---
 
 #
-# Copyright (c) 2014 Davide Guerri <davide.guerri@gmail.com>
+# Copyright (c) 2015 Badi' Abdul-Wahid <adbulwahidc@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,12 @@
 # limitations under the License.
 #
 
-
-- name: Install Applications (yum)
-  yum: name="{{ item }}" state=present
+- name: CLEANUP Disable authentication token mechanism
+  replace:
+    dest="/etc/keystone/keystone-paste.ini"
+    regexp="^(\[{{ item }}\]\n(?:[#][\S\t ]*\n)*pipeline[ ]*=[ ]*[\S\t ]*)admin_token_auth[\t ]*([\S\t ]*)$"
+    replace="\1\2"
   with_items:
-    - openstack-keystone
-    - httpd
-    - mod_wsgi
-    - python-openstackclient
-    - memcached
-    - python-memcached
-    - MySQL-python
-    - openstack-selinux
-  notify:
-    - Enable Memcached
-    - Start Memcached
-    - Enable Apache
-    - Start Apache
-
-- meta: flush_handlers
+    - "pipeline:public_api"
+    - "pipeline:admin_api"
+    - "pipeline:api_v3"

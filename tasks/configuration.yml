@@ -18,44 +18,54 @@
 # limitations under the License.
 #
 
-- name: Configure Keystone
-  ini_file: >
+- name: Configure keystone
+  ini_file:
     dest=/etc/keystone/keystone.conf
     section="{{ item.section }}"
     option="{{ item.option }}"
     value="{{ item.value }}"
   with_items:
-    - section:  DEFAULT
-      option:   admin_token
-      value:    "{{ keystone_admin_token }}"
-    - section:  DEFAULT
-      option:   log_dir
-      value:    "{{ keystone_log_dir }}"
-    - section:  DEFAULT
-      option:   admin_bind_host
-      value:    "{{ keystone_admin_bind_host }}"
-    - section:  DEFAULT
-      option:   admin_port
-      value:    "{{ keystone_admin_port }}"
-    - section:  DEFAULT
-      option:   public_bind_host
-      value:    "{{ keystone_bind_host }}"
-    - section:  DEFAULT
-      option:   public_port
-      value:    "{{ keystone_port }}"
-  notify:
-    - Restart Keystone
 
-- name: Configure Keystone database
-  ini_file: >
+    - section:   DEFAULT
+      option:    admin_token
+      value:     "{{ keystone_admin_token }}"
+
+    - section:   DEFAULT
+      option:    log_dir
+      value:     "{{ keystone_log_dir }}"
+
+    - section:   database
+      option:    connection
+      value:     "{{ keystone_database_url }}"
+
+    - section:   memcache
+      option:    servers
+      value:     "{{ ','.join(keystone_memcached_servers) }}"
+
+    - section:   token
+      option:    provider
+      value:     keystone.token.providers.uuid.Provider
+
+    - section:   token
+      option:    driver
+      value:     keystone.token.persistence.backends.memcache.Token
+
+    - section:   revoke
+      option:    driver
+      value:     keystone.contrib.revoke.backends.sql.Revoke
+
+  #notify:
+  #  - Sync Keystone database
+  #  - Start Apache
+
+- name: Configure keystone to be verbose
+  when: keystone_verbose
+  ini_file:
     dest=/etc/keystone/keystone.conf
-    section="{{ item.section }}"
-    option="{{ item.option }}"
-    value="{{ item.value }}"
-  with_items:
-    - section: database
-      option: connection
-      value: "{{ keystone_database_url }}"
+    section=DEFAULT
+    option=verbose
+    value=True
   notify:
     - Sync Keystone database
-    - Restart Keystone
+    - Start Apache
+

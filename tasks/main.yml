@@ -23,19 +23,20 @@
 - include: facts.yml
 - include: packages.yml
 - include: configuration.yml
+- include: wsgi.yml
 
 - meta: flush_handlers
 
-- name: Make sure Keystone is started
-  service: name={{ keystone_service }} state=started
-- name: Wait Keystone admin serice
-  wait_for: >
-    host={{ keystone_hostname }}
-    port={{ keystone_admin_port }}
+- name: Ensure that the Keystone service is stopped
+  service:
+    name={{ keystone_service }}
+    state=stopped
 
 - include: maintenance.yml
-
 - include: endpoints.yml
 - include: tenants.yml
 - include: users.yml
 - include: roles.yml
+- include: cleanup.yml
+- include: sanitycheck.yml
+  when: keystone_run_sanity_check

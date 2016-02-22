@@ -1,18 +1,42 @@
 ---
 
-- hosts: localhost
+- hosts: all
   remote_user: root
+  sudo: True
+  pre_tasks:
+
+    - name: Install Ubuntu Cloud archive keyring (Debian)
+      when: ansible_os_family == 'Debian'
+      apt: pkg=ubuntu-cloud-keyring
+
+    - name: Enable OpenStack (Debian)
+      when: ansible_os_family == 'Debian'
+      apt_repository: repo='deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/kilo main'
+                      state=present
+                      update_cache=yes
+
+    - name: Enable OpenStack (RedHat)
+      when: ansible_os_family == 'RedHat'
+      yum: name="{{ item }}"
+           state=present
+           update_cache=yes
+      with_items:
+        - "http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm"
+        - "http://rdo.fedorapeople.org/openstack-kilo/rdo-release-kilo.rpm"
+
   roles:
     - role: openstack-keystone
+      keystone_run_sanity_check: yes
       keystone_admin_token: "os token"
-      keystone_admin_bind_host: 127.0.0.1
-      keystone_bind_host: 127.0.0.1
+      keystone_admin_password: "admin password"
+      keystone_admin_bind_host: localhost
+      keystone_bind_host: localhost
       keystone_tenants:
         - { name: admin, description: "Admin tenant" }
         - { name: service, description: "Service tenant" }
         - { name: demo, description: "Demo tenant"  }
       keystone_users:
-        - { name: admin, password: "admin password", tenant: admin }
+        - { name: admin, password: "{{ keystone_admin_password }}", tenant: admin }
         - { name: demo, password: "demo password", tenant: demo }
         - { name: glance, password: "glance password", tenant: service }
       keystone_roles:
@@ -24,6 +48,6 @@
         - { name: glance, service_type: image }
       keystone_endpoints:
         - service_name: keystone
-          public_url: "http://127.0.0.1:5000/v2.0"
-          internal_url: "http://127.0.0.1:5000/v2.0"
-          admin_url: "http://127.0.0.1:35357/v2.0"
+          public_url: "http://localhost:5000/v2.0"
+          internal_url: "http://localhost:5000/v2.0"
+          admin_url: "http://localhost:35357/v2.0"
