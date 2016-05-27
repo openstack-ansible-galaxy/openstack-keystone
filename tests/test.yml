@@ -11,7 +11,7 @@
 
     - name: Enable OpenStack (Debian)
       when: ansible_os_family == 'Debian'
-      apt_repository: repo='deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/liberty main'
+      apt_repository: repo='deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/mitaka main'
                       state=present
                       update_cache=yes
 
@@ -22,7 +22,7 @@
            update_cache=yes
       with_items:
         - "epel-release"
-        - "https://repos.fedorapeople.org/repos/openstack/openstack-liberty/rdo-release-liberty-2.noarch.rpm"
+        - "centos-release-openstack-mitaka"
 
   roles:
     - role: openstack-keystone
