@@ -18,8 +18,7 @@ before_install:
 install:
   # Install Ansible.
   - pip install ansible
-  # Install Keystone client
-  - sudo apt-get install -y python-keystoneclient
+  - sudo apt-get install -y python-openstackclient
 
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
@@ -43,9 +42,11 @@ script:
 
   # Test Keystone setup
   - >
-    keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0
-    service-list | grep keystone
+    openstack --os-password 'admin password' --os-auth-url http://localhost:35357/v2.0
+    --os-username admin --os-tenant-name admin
+    service list | grep keystone
 
   - >
-    keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0
-    endpoint-list
+    openstack --os-password 'admin password' --os-auth-url http://localhost:35357/v2.0
+    --os-username admin --os-tenant-name admin
+    endpoint list
