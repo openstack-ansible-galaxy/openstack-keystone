@@ -9,7 +9,7 @@ Keystone OpenStack Ansible Role
 
 OpenStack Keystone identity service installation.
 
-_Tested on Ubuntu Precise (12.04) and Trusty (14.04)_ with Juno.
+_Tested on Trusty (14.04)_ with Mitaka.
 
 
 Requirements
