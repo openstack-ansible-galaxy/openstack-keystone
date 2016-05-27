@@ -30,4 +30,4 @@
   until: not result|failed
   retries: "{{ keystone_api_retries }}"
   delay: "{{ keystone_api_retries_delay }}"
-  with_items: keystone_roles
+  with_items: "{{ keystone_roles }}"
