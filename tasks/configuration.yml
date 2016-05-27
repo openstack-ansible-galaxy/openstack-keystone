@@ -20,10 +20,10 @@
 
 - name: Configure keystone
   ini_file:
-    dest=/etc/keystone/keystone.conf
-    section="{{ item.section }}"
-    option="{{ item.option }}"
-    value="{{ item.value }}"
+    dest: /etc/keystone/keystone.conf
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
   with_items:
 
     - section:   DEFAULT
@@ -61,11 +61,10 @@
 - name: Configure keystone to be verbose
   when: keystone_verbose
   ini_file:
-    dest=/etc/keystone/keystone.conf
-    section=DEFAULT
-    option=verbose
-    value=True
+    dest: /etc/keystone/keystone.conf
+    section: DEFAULT
+    option: verbose
+    value: True
   notify:
     - Sync Keystone database
     - Start Apache
-

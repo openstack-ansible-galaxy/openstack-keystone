@@ -17,23 +17,20 @@
 # limitations under the License.
 #
 
-
 - name: Set facts for Debian family
   when: ansible_os_family == 'Debian'
   set_fact:
-    keystone_service="keystone"
-    webserver_service="apache2"
-    webserver_conf_path=/etc/apache2/apache2.conf
-    webserver_new_conf_dir_path="/etc/apache2/sites-available"
-    memcached_service="memcache"
-
+    keystone_service: "keystone"
+    webserver_service: "apache2"
+    webserver_conf_path: /etc/apache2/apache2.conf
+    webserver_new_conf_dir_path: "/etc/apache2/sites-available"
+    memcached_service: memcache"
 
 - name: Set facts for RedHat family
   when: ansible_os_family == 'RedHat'
   set_fact:
-    keystone_service="openstack-keystone"
-    webserver_service="httpd"
-    webserver_conf_path="/etc/httpd/conf/httpd.conf"
-    webserver_new_conf_dir_path="/etc/httpd/conf.d"
-    memcached_service="memcached.service"
-
+    keystone_service: "openstack-keystone"
+    webserver_service: "httpd"
+    webserver_conf_path: "/etc/httpd/conf/httpd.conf"
+    webserver_new_conf_dir_path: "/etc/httpd/conf.d"
+    memcached_service: "memcached.service"

@@ -19,27 +19,30 @@
 #
 
 - name: Stop Keystone
-  service: name={{ keystone_service }} state=stopped
+  service:
+    name: "{{ keystone_service }}"
+    state: stopped
 
 - name: Sync Keystone database
   command: keystone-manage db_sync
-  sudo: yes
-  sudo_user: keystone
+  become: yes
+  become_user: keystone
   retries: "{{ keystone_api_retries }}"
   delay: "{{ keystone_api_retries_delay }}"
 
 - name: Use WSGI
-  service: name={{ keystone_service }} state=stopped
-  service: name={{ webserver_service }} state=restarted
+  service:
+    name: "{{ webserver_service }}"
+    state: restarted
 
-- name: Enable Memcached
-  service: name={{ memcached_service }} enabled=yes
+- name: Enable and start Memcached
+  service:
+    name: "{{ memcached_service }}"
+    enabled: yes
+    state: restarted
 
-- name: Start Memcached
-  service: name={{ memcached_service }} state=restarted
-
-- name: Enable Apache
-  service: name={{ webserver_service }} enabled=yes
-
-- name: Start Apache
-  service: name={{ webserver_service }} state=restarted
+- name: Enable and start Apache
+  service:
+    name: "{{ webserver_service }}"
+    enabled: yes
+    state: restarted

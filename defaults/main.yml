@@ -23,7 +23,6 @@ keystone_hostname: localhost
 keystone_admin_token: keystone_admin_token
 keystone_admin_bind_host: 0.0.0.0
 keystone_admin_port: 35357
-keystone_hostname: localhost
 keystone_bind_host: 0.0.0.0
 keystone_port: 5000
 keystone_protocol: http
@@ -34,6 +33,9 @@ keystone_roles: []
 keystone_services: []
 keystone_endpoints: []
 keystone_default_region: RegionOne
+
+# Openstack
+openstack_version: mitaka
 
 # Database
 keystone_database_url: sqlite:////var/lib/keystone/keystone.db
@@ -49,7 +51,7 @@ keystone_wsgi_main_name: main
 keystone_wsgi_admin_name: admin
 keystone_upstream_wsgi_components:
   "http://git.openstack.org/cgit/openstack/keystone/plain/httpd/\
-  keystone.py?h=stable/kilo"
+  keystone.py?h=stable/{{ openstack_version }}"
 
 # Misc
 keystone_api_version: v2.0

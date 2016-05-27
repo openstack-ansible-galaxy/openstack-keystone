@@ -20,23 +20,23 @@
 
 
 - name: Create Keystone services
-  keystone_service: >
-    name="{{ item.name }}"
-    service_type="{{ item.service_type }}"
-    description="{{ item.description|default('Not provided') }}"
-    endpoint="{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}"
-    token="{{ keystone_admin_token }}"
-    state="{{ item.state|default('present') }}"
+  keystone_service:
+    name: "{{ item.name }}"
+    service_type: "{{ item.service_type }}"
+    description: "{{ item.description|default('Not provided') }}"
+    endpoint: "{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}"
+    token: "{{ keystone_admin_token }}"
+    state: "{{ item.state|default('present') }}"
   with_items: keystone_services
 
 - name: Create Keystone endpoints
-  keystone_endpoint: >
-    service_name="{{ item.service_name }}"
-    region="{{ item.region|default(keystone_default_region) }}"
-    public_url="{{ item.public_url }}"
-    internal_url="{{ item.internal_url }}"
-    admin_url="{{ item.admin_url }}"
-    endpoint="{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}"
-    token="{{ keystone_admin_token }}"
-    state="{{ item.state|default('present') }}"
+  keystone_endpoint:
+    service_name: "{{ item.service_name }}"
+    region: "{{ item.region|default(keystone_default_region) }}"
+    public_url: "{{ item.public_url }}"
+    internal_url: "{{ item.internal_url }}"
+    admin_url: "{{ item.admin_url }}"
+    endpoint: "{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}"
+    token: "{{ keystone_admin_token }}"
+    state: "{{ item.state|default('present') }}"
   with_items: keystone_endpoints
