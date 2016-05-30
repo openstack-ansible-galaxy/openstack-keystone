@@ -43,3 +43,8 @@
     group: keystone
     mode: 0755
     recurse: yes
+
+- name: WSGI Ensure webserver is running
+  service:
+    name: "{{ webserver_service }}"
+    state: started
