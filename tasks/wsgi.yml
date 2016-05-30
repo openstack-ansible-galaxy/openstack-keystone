@@ -23,27 +23,6 @@
   notify:
     - Use WSGI
 
-- name: WSGI Setup directory structure
-  file:
-    path: "{{ keystone_cgibin_dir }}"
-    state: directory
-
-- name: WSGI copy the components from the upstream repository
-  get_url:
-    url: "{{ keystone_upstream_wsgi_components }}"
-    dest: "{{ keystone_cgibin_dir }}/{{ item }}"
-  with_items:
-    - "{{ keystone_wsgi_main_name }}"
-    - "{{ keystone_wsgi_admin_name }}"
-
-- name: WSGI Fix ownership and permissions
-  file:
-    path: "{{ keystone_cgibin_dir }}"
-    owner: keystone
-    group: keystone
-    mode: 0755
-    recurse: yes
-
 - name: WSGI Ensure webserver is running
   service:
     name: "{{ webserver_service }}"
