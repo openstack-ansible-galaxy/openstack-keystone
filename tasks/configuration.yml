@@ -77,7 +77,7 @@
     path: /etc/keystone/
     owner: keystone
     group: keystone
-    recursive: True
+    recurse: True
   when: ansible_os_family == "RedHat"
 
 - name: Configure keystone to be verbose
