@@ -18,6 +18,7 @@ before_install:
 install:
   # Install Ansible.
   - pip install ansible
+  - ansible --version
   - sudo apt-get install -y python-openstackclient
 
   # Add ansible.cfg to pick up roles path.
@@ -50,6 +51,3 @@ script:
     openstack --os-password 'admin password' --os-auth-url http://localhost:35357/v2.0
     --os-username admin --os-tenant-name admin
     endpoint list
-
-  # Cat logs
-  - cat /var/log/apache2/keystone* 

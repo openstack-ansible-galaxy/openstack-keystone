@@ -64,6 +64,14 @@
     creates: /etc/keystone/fernet-keys/0
   become: yes
 
+- name: Fix keystone log ownership
+  file:
+    path: /var/log/keystone/keystone.log
+    owner: keystone
+    group: keystone
+    mode: 0644
+  when: ansible_os_family == "RedHat"
+
 - name: Configure keystone to be verbose
   when: keystone_verbose
   ini_file:
