@@ -7,22 +7,30 @@
 
     - name: Install Ubuntu Cloud archive keyring (Debian)
       when: ansible_os_family == 'Debian'
-      apt: pkg=ubuntu-cloud-keyring
+      apt:
+        name: ubuntu-cloud-keyring
+        state: present
 
     - name: Enable OpenStack (Debian)
       when: ansible_os_family == 'Debian'
-      apt_repository: repo='deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/mitaka main'
-                      state=present
-                      update_cache=yes
+      apt_repository:
+        repo: 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/mitaka main'
+        state: present
+        update_cache: yes
 
     - name: Enable OpenStack (RedHat)
       when: ansible_os_family == 'RedHat'
-      yum: name="{{ item }}"
-           state=present
-           update_cache=yes
+      yum:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
       with_items:
-        - "epel-release"
-        - "centos-release-openstack-mitaka"
+        - centos-release-openstack-mitaka
+        - policycoreutils-python
+
+    - name: Set permissive SElinux for httpd domain
+      command: semanage permissive -a httpd_t
+      when: ansible_os_family == "RedHat" and ansible_selinux
 
   roles:
     - role: openstack-keystone
