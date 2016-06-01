@@ -18,11 +18,6 @@
 # limitations under the License.
 #
 
-- name: Ensure that the Keystone service is stopped
-  service:
-    name: "{{ keystone_service }}"
-    state: stopped
-
 - name: Configure keystone
   ini_file:
     dest: /etc/keystone/keystone.conf

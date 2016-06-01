@@ -34,3 +34,5 @@
     - memcached
     - python-memcache
     - python-mysqldb
+  notify:
+    - Stop Keystone
