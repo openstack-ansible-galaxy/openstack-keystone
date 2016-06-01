@@ -10,6 +10,11 @@ env:
     version: 14.04
     init: /sbin/init
     run_opts: ""
+  - distribution: ubuntu
+    version: 16.04
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
 
 services:
   - docker
@@ -24,9 +29,6 @@ script:
   - container_id=$(mktemp)
   # Run container in detached state
   - 'sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/openstack-keystone:rw ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
-
-  # Disable ansible warnins and retries
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm echo "[defaults]\nretry_files_enabled = False\ndeprecation_warnings=False" > ansible.cfg'
 
   # Ansible syntax check.
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/openstack-keystone/tests/test.yml --syntax-check'
