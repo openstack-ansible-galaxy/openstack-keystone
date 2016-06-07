@@ -20,10 +20,10 @@
 
 - name: Configure keystone
   ini_file:
-    dest=/etc/keystone/keystone.conf
-    section="{{ item.section }}"
-    option="{{ item.option }}"
-    value="{{ item.value }}"
+    dest: /etc/keystone/keystone.conf
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
   with_items:
 
     - section:   DEFAULT
@@ -44,28 +44,45 @@
 
     - section:   token
       option:    provider
-      value:     keystone.token.providers.uuid.Provider
-
-    - section:   token
-      option:    driver
-      value:     keystone.token.persistence.backends.memcache.Token
+      value:     fernet
 
     - section:   revoke
       option:    driver
-      value:     keystone.contrib.revoke.backends.sql.Revoke
+      value:     sql
 
-  #notify:
-  #  - Sync Keystone database
-  #  - Start Apache
-
-- name: Configure keystone to be verbose
-  when: keystone_verbose
-  ini_file:
-    dest=/etc/keystone/keystone.conf
-    section=DEFAULT
-    option=verbose
-    value=True
   notify:
     - Sync Keystone database
     - Start Apache
 
+- name: Create fernet keys
+  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+  args:
+    creates: /etc/keystone/fernet-keys/0
+  become: yes
+
+- name: Fix keystone log ownership
+  file:
+    path: /var/log/keystone/keystone.log
+    owner: keystone
+    group: keystone
+    mode: 0644
+  when: ansible_os_family == "RedHat"
+
+- name: Fix keystone conf ownership
+  file:
+    path: /etc/keystone/
+    owner: keystone
+    group: keystone
+    recurse: True
+  when: ansible_os_family == "RedHat"
+
+- name: Configure keystone to be verbose
+  when: keystone_verbose
+  ini_file:
+    dest: /etc/keystone/keystone.conf
+    section: DEFAULT
+    option: debug
+    value: True
+  notify:
+    - Sync Keystone database
+    - Start Apache

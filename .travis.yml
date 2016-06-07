@@ -1,51 +1,50 @@
 ---
-language: python
-python: "2.7"
 sudo: required
-dist: trusty
+
+env:
+  - distribution: centos
+    version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: ubuntu
+    version: 14.04
+    init: /sbin/init
+    run_opts: ""
+  - distribution: ubuntu
+    version: 16.04
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
+
+services:
+  - docker
 
 before_install:
-  # Add required repos
-  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
-  - sudo apt-get install -y software-properties-common
-  - sudo apt-get install -y ubuntu-cloud-keyring
-  - sudo add-apt-repository -y cloud-archive:liberty
-  - sudo apt-get update -qq
-
-
-install:
-  # Install Ansible.
-  - pip install ansible==1.9.4
-  # Install Keystone client
-  - sudo apt-get install -y python-keystoneclient
-
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-
+  # Pull container
+  - 'sudo docker pull ${distribution}:${version}'
+  # Customize container
+  - 'sudo docker build --rm=true --file=tests/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible tests'
 
 script:
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i tests/inventory_local tests/test.yml --syntax-check
+  - container_id=$(mktemp)
+  # Run container in detached state
+  - 'sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/openstack-keystone:rw ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
 
-  # Run the role/playbook with ansible-playbook.
-  - >
-    ansible-playbook -i tests/inventory_local tests/test.yml --connection=local
-    --sudo
+  # Ansible syntax check.
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/openstack-keystone/tests/test.yml --syntax-check'
 
-  # Test role idempotency
+  # Test role.
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/openstack-keystone/tests/test.yml'
+
+  # DEBUG idempotence
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/openstack-keystone/tests/test.yml'
+
+  # Test role idempotence.
   - >
-    ansible-playbook -i tests/inventory_local tests/test.yml --connection=local
-    --sudo | grep -q 'changed=0.*failed=0'
+    sudo docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/openstack-keystone/tests/test.yml
+    | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-  # Test Keystone setup
-  - >
-    keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0
-    service-list | grep keystone
-
-  - >
-    keystone --os-token 'os token' --os-endpoint http://localhost:35357/v2.0
-    endpoint-list
+  # Clean up
+  - 'sudo docker stop "$(cat ${container_id})"'

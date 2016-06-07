@@ -27,16 +27,11 @@
 
 - meta: flush_handlers
 
-- name: Ensure that the Keystone service is stopped
-  service:
-    name={{ keystone_service }}
-    state=stopped
-
 - include: maintenance.yml
 - include: endpoints.yml
 - include: tenants.yml
 - include: users.yml
 - include: roles.yml
-- include: cleanup.yml
+#- include: cleanup.yml
 - include: sanitycheck.yml
   when: keystone_run_sanity_check

@@ -23,7 +23,6 @@ keystone_hostname: localhost
 keystone_admin_token: keystone_admin_token
 keystone_admin_bind_host: 0.0.0.0
 keystone_admin_port: 35357
-keystone_hostname: localhost
 keystone_bind_host: 0.0.0.0
 keystone_port: 5000
 keystone_protocol: http
@@ -44,12 +43,8 @@ keystone_memcached_servers:
   - "localhost"
 
 # WSGI
-keystone_cgibin_dir: /var/www/cgi-bin/keystone
-keystone_wsgi_main_name: main
-keystone_wsgi_admin_name: admin
-keystone_upstream_wsgi_components:
-  "http://git.openstack.org/cgit/openstack/keystone/plain/httpd/\
-  keystone.py?h=stable/kilo"
+keystone_wsgi_public_path: /usr/bin/keystone-wsgi-public
+keystone_wsgi_admin_path: /usr/bin/keystone-wsgi-admin
 
 # Misc
 keystone_api_version: v2.0

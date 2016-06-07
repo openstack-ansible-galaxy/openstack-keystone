@@ -18,7 +18,10 @@
 #
 
 - name: Disable keystone service from starting automatically
-  lineinfile: dest=/etc/init/keystone.override create=yes line="manual"
+  lineinfile:
+    dest: /etc/init/keystone.override
+    create: yes
+    line: "manual"
 
 - name: Install keystone-related packages
   apt: name="{{ item }}" state=present
@@ -31,3 +34,5 @@
     - memcached
     - python-memcache
     - python-mysqldb
+  notify:
+    - Stop Keystone
