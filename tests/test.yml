@@ -16,14 +16,14 @@
       apt_repository:
         repo: 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/mitaka main'
         state: present
-        update_cache: yes
+        update_cache: True
 
     - name: Enable OpenStack (RedHat)
       when: ansible_os_family == 'RedHat'
       yum:
-        name: "{{ item }}"
+        name: '{{ item }}'
         state: present
-        update_cache: yes
+        update_cache: True
       with_items:
         - centos-release-openstack-mitaka
         - policycoreutils-python
@@ -31,32 +31,35 @@
     # Workaround for selinux errors when using sqlite DB
     - name: Set permissive SElinux for httpd domain
       command: semanage permissive -a httpd_t
-      when: ansible_os_family == "RedHat" and (ansible_selinux.mode is defined) and (ansible_selinux.mode == "enforcing")
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_selinux.mode is defined
+        - ansible_selinux.mode == 'enforcing'
 
   roles:
     - role: openstack-keystone
-      keystone_run_sanity_check: yes
-      keystone_admin_token: "os token"
-      keystone_admin_password: "admin password"
+      keystone_run_sanity_check: True
+      keystone_admin_token: 'os token'
+      keystone_admin_password: 'admin password'
       keystone_admin_bind_host: localhost
       keystone_bind_host: localhost
       keystone_tenants:
-        - { name: admin, description: "Admin tenant" }
-        - { name: service, description: "Service tenant" }
-        - { name: demo, description: "Demo tenant"  }
+        - { name: admin, description: 'Admin tenant' }
+        - { name: service, description: 'Service tenant' }
+        - { name: demo, description: 'Demo tenant' }
       keystone_users:
-        - { name: admin, password: "{{ keystone_admin_password }}", tenant: admin }
-        - { name: demo, password: "demo password", tenant: demo }
-        - { name: glance, password: "glance password", tenant: service }
+        - { name: admin, password: '{{ keystone_admin_password }}', tenant: admin }
+        - { name: demo, password: 'demo password', tenant: demo }
+        - { name: glance, password: 'glance password', tenant: service }
       keystone_roles:
         - { name: admin, user: admin, tenant: admin }
-        - { name: _member_, user: demo, tenant: demo  }
-        - { name: admin, user: glance, tenant: service  }
+        - { name: _member_, user: demo, tenant: demo }
+        - { name: admin, user: glance, tenant: service }
       keystone_services:
         - { name: keystone, service_type: identity }
         - { name: glance, service_type: image }
       keystone_endpoints:
         - service_name: keystone
-          public_url: "http://localhost:5000/v2.0"
-          internal_url: "http://localhost:5000/v2.0"
-          admin_url: "http://localhost:35357/v2.0"
+          public_url: 'http://localhost:5000/v2.0'
+          internal_url: 'http://localhost:5000/v2.0'
+          admin_url: 'http://localhost:35357/v2.0'

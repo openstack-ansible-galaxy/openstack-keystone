@@ -19,10 +19,10 @@
 
 - name: CLEANUP Disable authentication token mechanism
   replace:
-    dest: "/etc/keystone/keystone-paste.ini"
-    regexp="^(\[{{ item }}\]\n(?:[#][\S\t ]*\n)*pipeline[ ]*=[ ]*[\S\t ]*)admin_token_auth[\t ]*([\S\t ]*)$"
-    replace: "\1\2"
+    dest: '/etc/keystone/keystone-paste.ini'
+    regexp='^(\[{{ item }}\]\n(?:[#][\S\t ]*\n)*pipeline[ ]*=[ ]*[\S\t ]*)admin_token_auth[\t ]*([\S\t ]*)$'
+    replace: '\1\2'
   with_items:
-    - "pipeline:public_api"
-    - "pipeline:admin_api"
-    - "pipeline:api_v3"
+    - 'pipeline:public_api'
+    - 'pipeline:admin_api'
+    - 'pipeline:api_v3'

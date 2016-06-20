@@ -20,11 +20,13 @@
 - name: Disable keystone service from starting automatically
   lineinfile:
     dest: /etc/init/keystone.override
-    create: yes
-    line: "manual"
+    create: True
+    line: 'manual'
 
 - name: Install keystone-related packages
-  apt: name="{{ item }}" state=present
+  apt:
+    name: '{{ item }}'
+    state: present
   with_items:
     - keystone
     - python-openstackclient

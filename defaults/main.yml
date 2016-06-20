@@ -40,7 +40,7 @@ keystone_remove_sqlite_db: no
 
 # Memcached
 keystone_memcached_servers:
-  - "localhost"
+  - 'localhost'
 
 # WSGI
 keystone_wsgi_public_path: /usr/bin/keystone-wsgi-public

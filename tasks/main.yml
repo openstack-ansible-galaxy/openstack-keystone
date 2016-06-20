@@ -22,6 +22,7 @@
 
 - include: facts.yml
 - include: packages.yml
+- meta: flush_handlers
 - include: configuration.yml
 - include: wsgi.yml
 

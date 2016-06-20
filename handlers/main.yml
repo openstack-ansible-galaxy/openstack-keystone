@@ -20,29 +20,29 @@
 
 - name: Stop Keystone
   service:
-    name: "{{ keystone_service }}"
+    name: '{{ keystone_service }}'
     state: stopped
 
 - name: Sync Keystone database
   command: keystone-manage db_sync
-  become: yes
+  become: True
   become_user: keystone
-  retries: "{{ keystone_api_retries }}"
-  delay: "{{ keystone_api_retries_delay }}"
+  retries: '{{ keystone_api_retries }}'
+  delay: '{{ keystone_api_retries_delay }}'
 
 - name: Use WSGI
   service:
-    name: "{{ webserver_service }}"
+    name: '{{ webserver_service }}'
     state: restarted
 
 - name: Enable and start Memcached
   service:
-    name: "{{ memcached_service }}"
-    enabled: yes
+    name: '{{ memcached_service }}'
+    enabled: True
     state: restarted
 
 - name: Enable and start Apache
   service:
-    name: "{{ webserver_service }}"
-    enabled: yes
+    name: '{{ webserver_service }}'
+    enabled: True
     state: restarted

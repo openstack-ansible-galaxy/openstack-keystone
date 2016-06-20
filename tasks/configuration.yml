@@ -21,44 +21,37 @@
 - name: Configure keystone
   ini_file:
     dest: /etc/keystone/keystone.conf
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
+    section: '{{ item.section }}'
+    option: '{{ item.option }}'
+    value: '{{ item.value }}'
   with_items:
-
-    - section:   DEFAULT
-      option:    admin_token
-      value:     "{{ keystone_admin_token }}"
-
-    - section:   DEFAULT
-      option:    log_dir
-      value:     "{{ keystone_log_dir }}"
-
-    - section:   database
-      option:    connection
-      value:     "{{ keystone_database_url }}"
-
-    - section:   memcache
-      option:    servers
-      value:     "{{ ','.join(keystone_memcached_servers) }}"
-
-    - section:   token
-      option:    provider
-      value:     fernet
-
-    - section:   revoke
-      option:    driver
-      value:     sql
-
+  - section: DEFAULT
+    option: admin_token
+    value: '{{ keystone_admin_token }}'
+  - section: DEFAULT
+    option: log_dir
+    value: '{{ keystone_log_dir }}'
+  - section: database
+    option: connection
+    value: '{{ keystone_database_url }}'
+  - section: memcache
+    option: servers
+    value: "{{ ','.join(keystone_memcached_servers) }}"
+  - section: token
+    option: provider
+    value: fernet
+  - section: revoke
+    option: driver
+    value: sql
   notify:
-    - Sync Keystone database
-    - Start Apache
+  - Sync Keystone database
+  - Start Apache
 
 - name: Create fernet keys
   command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
   args:
     creates: /etc/keystone/fernet-keys/0
-  become: yes
+  become: True
 
 - name: Fix keystone log ownership
   file:
@@ -66,7 +59,7 @@
     owner: keystone
     group: keystone
     mode: 0644
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == 'RedHat'
 
 - name: Fix keystone conf ownership
   file:
@@ -74,7 +67,7 @@
     owner: keystone
     group: keystone
     recurse: True
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == 'RedHat'
 
 - name: Configure keystone to be verbose
   when: keystone_verbose
@@ -84,5 +77,5 @@
     option: debug
     value: True
   notify:
-    - Sync Keystone database
-    - Start Apache
+  - Sync Keystone database
+  - Start Apache
