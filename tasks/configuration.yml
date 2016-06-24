@@ -20,82 +20,88 @@
 
 - name: Configure keystone
   ini_file:
-    dest: /etc/keystone/keystone.conf
+    dest: '/etc/keystone/keystone.conf'
     section: '{{ item.section }}'
     option: '{{ item.option }}'
     value: '{{ item.value }}'
-  with_items:
-  - section: DEFAULT
-    option: admin_token
-    value: '{{ keystone_admin_token }}'
-  - section: DEFAULT
-    option: log_dir
-    value: '{{ keystone_log_dir }}'
-  - section: catalog
-    option: caching
-    value: '{{ keystone_catalog_caching|default(True) }}'
-  - section: database
-    option: connection
-    value: '{{ keystone_database_url }}'
-  - section: domain_config
-    option: caching
-    value: '{{ keystone_domain_config_caching|default(True) }}'
-  - section: identity
-    option: caching
-    value: '{{ keystone_identity_caching|default(True) }}'
-  - section: memcache
-    option: servers
-    value: "{{ ','.join(keystone_memcached_servers) }}"
-  - section: token
-    option: provider
-    value: fernet
-  - section: resource
-    option: caching
-    value: '{{ keystone_resource_caching|default(True) }}'
-  - section: revoke
-    option: driver
-    value: sql
-  - section: revoke
-    option: caching
-    value: '{{ keystone_revoke_caching|default(True) }}'
-  - section: role
-    option: caching
-    value: '{{ keystone_role_caching|default(True) }}'
-  - section: token
-    option: caching
-    value: '{{ keystone_token_caching|default(True) }}'
   notify:
-  - Sync Keystone database
-  - Start Apache
+    - Restart webserver
+  with_items:
+    - section: 'DEFAULT'
+      option: 'admin_token'
+      value: '{{ keystone_admin_token }}'
+    - section: 'DEFAULT'
+      option: 'log_dir'
+      value: '{{ keystone_log_dir }}'
+    - section: 'catalog'
+      option: 'caching'
+      value: '{{ keystone_catalog_caching|default(True) }}'
+    - section: 'database'
+      option: 'connection'
+      value: '{{ keystone_database_url }}'
+    - section: 'domain_config'
+      option: 'caching'
+      value: '{{ keystone_domain_config_caching|default(True) }}'
+    - section: 'identity'
+      option: 'caching'
+      value: '{{ keystone_identity_caching|default(True) }}'
+    - section: 'memcache'
+      option: 'servers'
+      value: "{{ ','.join(keystone_memcached_servers) }}"
+    - section: 'token'
+      option: 'provider'
+      value: 'fernet'
+    - section: 'resource'
+      option: 'caching'
+      value: '{{ keystone_resource_caching|default(True) }}'
+    - section: 'revoke'
+      option: 'driver'
+      value: 'sql'
+    - section: 'revoke'
+      option: 'caching'
+      value: '{{ keystone_revoke_caching|default(True) }}'
+    - section: 'role'
+      option: 'caching'
+      value: '{{ keystone_role_caching|default(True) }}'
+    - section: 'token'
+      option: 'caching'
+      value: '{{ keystone_token_caching|default(True) }}'
+
+- name: Get current keystone database version
+  command: 'keystone-manage db_version'
+  always_run: True
+  become: True
+  become_user: 'keystone'
+  changed_when: keystone_manage_db_version.stdout|int != keystone_database_schema_version
+  register: keystone_manage_db_version
+
+- name: Migrate keystone database to desired version
+  command: 'keystone-manage db_sync {{ keystone_database_schema_version }}'
+  become: True
+  become_user: 'keystone'
+  when: keystone_manage_db_version|changed
 
 - name: Create fernet keys
-  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+  command: >-
+    keystone-manage fernet_setup
+    --keystone-user keystone --keystone-group keystone
   args:
-    creates: /etc/keystone/fernet-keys/0
-
-- name: Fix keystone log ownership
-  file:
-    path: /var/log/keystone/keystone.log
-    owner: keystone
-    group: keystone
-    mode: 0644
-  when: ansible_os_family == 'RedHat'
+    creates: '/etc/keystone/fernet-keys/0'
 
 - name: Fix keystone conf ownership
   file:
-    path: /etc/keystone/
-    owner: keystone
-    group: keystone
+    group: 'keystone'
+    owner: 'keystone'
+    path: '/etc/keystone/'
     recurse: True
   when: ansible_os_family == 'RedHat'
 
 - name: Configure keystone to be verbose
-  when: keystone_verbose
   ini_file:
-    dest: /etc/keystone/keystone.conf
-    section: DEFAULT
-    option: debug
+    dest: '/etc/keystone/keystone.conf'
+    section: 'DEFAULT'
+    option: 'debug'
     value: True
   notify:
-  - Sync Keystone database
-  - Start Apache
+    - Restart webserver
+  when: keystone_verbose

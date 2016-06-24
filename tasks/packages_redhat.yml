@@ -17,24 +17,24 @@
 # limitations under the License.
 #
 
-
 - name: Install Applications (yum)
   yum:
     name: '{{ item }}'
     state: present
-  with_items:
-    - openstack-keystone
-    - httpd
-    - mod_wsgi
-    - python-openstackclient
-    - memcached
-    - python-memcached
-    - MySQL-python
-    - openstack-selinux
   notify:
-    - Enable Memcached
-    - Start Memcached
-    - Enable Apache
-    - Start Apache
+    - Restart webserver
+  with_items:
+    - 'MySQL-python'
+    - 'httpd'
+    - 'memcached'
+    - 'mod_wsgi'
+    - 'openstack-keystone'
+    - 'openstack-selinux'
+    - 'python-memcached'
+    - 'python-openstackclient'
 
-- meta: flush_handlers
+- name: Stop and disable keystone
+  service:
+    enabled: False
+    name: '{{ keystone_service }}'
+    state: stopped

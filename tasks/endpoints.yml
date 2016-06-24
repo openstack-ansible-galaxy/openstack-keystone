@@ -18,15 +18,14 @@
 # limitations under the License.
 #
 
-
 - name: Create Keystone services
   keystone_service:
     name: '{{ item.name }}'
     service_type: '{{ item.service_type }}'
-    description: "{{ item.description|default('Not provided') }}"
+    description: '{{ item.description|default("Not provided") }}'
     endpoint: '{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}'
     token: '{{ keystone_admin_token }}'
-    state: "{{ item.state|default('present') }}"
+    state: '{{ item.state|default("present") }}'
   with_items: '{{ keystone_services }}'
 
 - name: Create Keystone endpoints
@@ -38,5 +37,5 @@
     admin_url: '{{ item.admin_url }}'
     endpoint: '{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}'
     token: '{{ keystone_admin_token }}'
-    state: "{{ item.state|default('present') }}"
+    state: '{{ item.state|default("present") }}'
   with_items: '{{ keystone_endpoints }}'

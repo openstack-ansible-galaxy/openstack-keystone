@@ -19,36 +19,37 @@
 #
 
 # Keystone
-keystone_hostname: localhost
-keystone_admin_token: keystone_admin_token
-keystone_admin_bind_host: 0.0.0.0
+keystone_hostname: 'localhost'
+keystone_admin_token: 'keystone_admin_token'
+keystone_admin_bind_host: '0.0.0.0'
 keystone_admin_port: 35357
-keystone_bind_host: 0.0.0.0
+keystone_bind_host: '0.0.0.0'
 keystone_port: 5000
-keystone_protocol: http
-keystone_log_dir: /var/log/keystone
+keystone_protocol: 'http'
+keystone_log_dir: '/var/log/keystone'
 keystone_tenants: []
 keystone_users: []
 keystone_roles: []
 keystone_services: []
 keystone_endpoints: []
-keystone_default_region: RegionOne
+keystone_default_region: 'RegionOne'
 
 # Database
-keystone_database_url: sqlite:////var/lib/keystone/keystone.db
-keystone_remove_sqlite_db: no
+keystone_database_url: 'sqlite:////var/lib/keystone/keystone.db'
+keystone_database_schema_version: 96
+keystone_remove_sqlite_db: False
 
 # Memcached
 keystone_memcached_servers:
   - 'localhost'
 
 # WSGI
-keystone_wsgi_public_path: /usr/bin/keystone-wsgi-public
-keystone_wsgi_admin_path: /usr/bin/keystone-wsgi-admin
+keystone_wsgi_public_path: '/usr/bin/keystone-wsgi-public'
+keystone_wsgi_admin_path: '/usr/bin/keystone-wsgi-admin'
 
 # Misc
-keystone_api_version: v2.0
+keystone_api_version: 'v2.0'
 keystone_api_retries: 3
 keystone_api_retries_delay: 5
-keystone_verbose: no
-keystone_run_sanity_check: no
+keystone_verbose: False
+keystone_run_sanity_check: False
