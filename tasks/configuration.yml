@@ -31,18 +31,39 @@
   - section: DEFAULT
     option: log_dir
     value: '{{ keystone_log_dir }}'
+  - section: catalog
+    option: caching
+    value: '{{ keystone_catalog_caching|default(True) }}'
   - section: database
     option: connection
     value: '{{ keystone_database_url }}'
+  - section: domain_config
+    option: caching
+    value: '{{ keystone_domain_config_caching|default(True) }}'
+  - section: identity
+    option: caching
+    value: '{{ keystone_identity_caching|default(True) }}'
   - section: memcache
     option: servers
     value: "{{ ','.join(keystone_memcached_servers) }}"
   - section: token
     option: provider
     value: fernet
+  - section: resource
+    option: caching
+    value: '{{ keystone_resource_caching|default(True) }}'
   - section: revoke
     option: driver
     value: sql
+  - section: revoke
+    option: caching
+    value: '{{ keystone_revoke_caching|default(True) }}'
+  - section: role
+    option: caching
+    value: '{{ keystone_role_caching|default(True) }}'
+  - section: token
+    option: caching
+    value: '{{ keystone_token_caching|default(True) }}'
   notify:
   - Sync Keystone database
   - Start Apache
@@ -51,7 +72,6 @@
   command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
   args:
     creates: /etc/keystone/fernet-keys/0
-  become: True
 
 - name: Fix keystone log ownership
   file:
