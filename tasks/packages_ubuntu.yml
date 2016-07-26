@@ -17,24 +17,34 @@
 # limitations under the License.
 #
 
-- name: Disable keystone service from starting automatically
+- name: Disable keystone service from starting automatically (upstart)
   lineinfile:
-    dest: /etc/init/keystone.override
+    dest: '/etc/init/keystone.override'
     create: True
     line: 'manual'
+  when:
+    ansible_distribution_release == 'trusty'
+
+- name: Disable keystone service from starting automatically (systemd)
+  file:
+    dest: '/etc/systemd/system/keystone.service'
+    src: '/dev/null'
+    state: link
+  when:
+    ansible_distribution_release == 'xenial'
 
 - name: Install keystone-related packages
   apt:
     name: '{{ item }}'
     state: present
-  with_items:
-    - keystone
-    - python-openstackclient
-    - python-keystoneclient
-    - apache2
-    - libapache2-mod-wsgi
-    - memcached
-    - python-memcache
-    - python-mysqldb
   notify:
-    - Stop Keystone
+    - Restart webserver
+  with_items:
+    - 'apache2'
+    - 'keystone'
+    - 'libapache2-mod-wsgi'
+    - 'memcached'
+    - 'python-keystoneclient'
+    - 'python-memcache'
+    - 'python-mysqldb'
+    - 'python-openstackclient'

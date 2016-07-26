@@ -17,8 +17,20 @@
 # limitations under the License.
 #
 
+- include: packages_ubuntu.yml
+  when: ansible_os_family == 'Debian'
+
 - include: packages_redhat.yml
   when: ansible_os_family == 'RedHat'
 
-- include: packages_debian.yml
-  when: ansible_os_family == 'Debian'
+- name: Start and enable memcached
+  service:
+    enabled: True
+    name: '{{ memcached_service }}'
+    state: started
+
+- name: Start and enable apache
+  service:
+    enabled: True
+    name: '{{ webserver_service }}'
+    state: started

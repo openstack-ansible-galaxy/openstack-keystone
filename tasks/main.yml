@@ -22,7 +22,6 @@
 
 - include: facts.yml
 - include: packages.yml
-- meta: flush_handlers
 - include: configuration.yml
 - include: wsgi.yml
 
@@ -33,6 +32,7 @@
 - include: tenants.yml
 - include: users.yml
 - include: roles.yml
-#- include: cleanup.yml
+# - include: cleanup.yml
+
 - include: sanitycheck.yml
   when: keystone_run_sanity_check

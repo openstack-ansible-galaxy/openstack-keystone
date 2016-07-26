@@ -25,9 +25,9 @@
     tenant: '{{ item.tenant }}'
     endpoint: '{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}'
     token: '{{ keystone_admin_token }}'
-    state: "{{ item.state|default('present') }}"
-  register: result
-  until: not result|failed
-  retries: '{{ keystone_api_retries }}'
+    state: '{{ item.state|default("present") }}'
   delay: '{{ keystone_api_retries_delay }}'
+  register: result
+  retries: '{{ keystone_api_retries }}'
+  until: not result|failed
   with_items: '{{ keystone_roles }}'
