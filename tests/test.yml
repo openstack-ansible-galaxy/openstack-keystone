@@ -39,12 +39,55 @@
         - ansible_selinux.mode is defined and ansible_selinux.mode == 'enforcing'
 
   roles:
+    - role: mysql
+      mysql_root_password: 'mysqlpassword'
+      mysql_bind_address: 0.0.0.0
+      mysql_innodb_file_per_table: 'innodb_file_per_table'
+      mysql_packages:
+        - mariadb-client
+        - mariadb-server
+        - python-mysqldb
+      mysql_databases:
+        - name: 'keystone'
+      mysql_users:
+        - name: 'keystone'
+          password: 'keystonepassword'
+          priv: 'keystone.*:ALL'
+          host: '%'
+        - name: 'keystone'
+          password: 'keystonepassword'
+          priv: 'keystone.*:ALL'
+          host: 'localhost'
+      when: ansible_os_family == 'Debian'
+
+    - role: mysql
+      mysql_root_password: 'mysqlpassword'
+      mysql_bind_address: 0.0.0.0
+      mysql_innodb_file_per_table: 'innodb_file_per_table'
+      mysql_daemon: 'mariadb'
+      mysql_log_error: '/var/log/mariadb/mariadb.log'
+      mysql_syslog_tag: 'mariadb'
+      mysql_pid_file: '/var/run/mariadb/mariadb.pid'
+      mysql_databases:
+        - name: 'keystone'
+      mysql_users:
+        - name: 'keystone'
+          password: 'keystonepassword'
+          priv: 'keystone.*:ALL'
+          host: '%'
+        - name: 'keystone'
+          password: 'keystonepassword'
+          priv: 'keystone.*:ALL'
+          host: 'localhost'
+      when: ansible_os_family == 'RedHat'
+
     - role: openstack-keystone
       keystone_run_sanity_check: True
       keystone_admin_token: 'os token'
       keystone_admin_password: 'admin password'
       keystone_admin_bind_host: 'localhost'
       keystone_bind_host: 'localhost'
+      keystone_database_url: 'mysql+pymysql://keystone:keystonepassword@localhost/keystone'
       keystone_tenants:
         - name: 'admin'
           description: 'Admin tenant'
