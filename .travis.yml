@@ -27,6 +27,7 @@ services:
 
 sudo: 'required'
 
+
 before_install:
   # Set up RabbitMQ user and permissions
   - 'sudo rabbitmqctl add_user test testpw'
