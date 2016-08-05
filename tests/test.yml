@@ -1,42 +1,9 @@
 ---
 
+- include: test_common.yml
+
 - hosts: all
   become: True
-
-  pre_tasks:
-    - block:
-        - name: Install Ubuntu Cloud archive keyring (Ubuntu)
-          apt:
-            name: 'ubuntu-cloud-keyring'
-            state: present
-            update_cache: True
-
-        - name: Enable OpenStack (Trusty)
-          apt_repository:
-            repo: 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/mitaka main'
-            state: present
-            update_cache: True
-          when: ansible_distribution_release == 'trusty'
-      when: ansible_os_family == 'Debian'
-
-    - name: Enable OpenStack (RedHat)
-      yum:
-        name: '{{ item }}'
-        state: present
-        update_cache: True
-      when: ansible_os_family == 'RedHat'
-      with_items:
-        - 'centos-release-openstack-mitaka'
-        - 'policycoreutils-python'
-
-    # Workaround for selinux errors when using sqlite DB
-    - name: Set permissive SElinux for httpd domain
-      selinux_permissive:
-        name: 'httpd_t'
-        permissive: True
-      when:
-        - ansible_os_family == 'RedHat'
-        - ansible_selinux.mode is defined and ansible_selinux.mode == 'enforcing'
 
   roles:
     - role: mysql

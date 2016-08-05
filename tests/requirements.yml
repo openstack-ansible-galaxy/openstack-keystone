@@ -1,4 +1,7 @@
 ---
 
-- name: mysql
-  src: geerlingguy.mysql
+- name: 'openstack-repo'
+  src: 'abelboldu.openstack-repo'
+
+- name: 'mysql'
+  src: 'geerlingguy.mysql'
