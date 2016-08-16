@@ -21,11 +21,14 @@
 - name: SANITY CHECK Request auth token as admin
   shell: >-
     openstack
-    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
+    --os-identity-api-version 3
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357/v3
     --os-project-name admin
     --os-username admin
     --os-auth-type password
     --os-password "{{ keystone_admin_password }}"
+    --os-user-domain-id default
+    --os-project-domain-id default
     token issue
   changed_when: token_test.rc != 0
   register: token_test
@@ -35,13 +38,14 @@
 - name: SANITY CHECK Try with domain
   shell: >-
     openstack
+    --os-identity-api-version 3
     --os-auth-url http://{{ keystone_admin_bind_host }}:35357
-    --os-project-domain-id default
-    --os-user-domain-id default
     --os-project-name admin
     --os-username admin
     --os-auth-type password
     --os-password "{{ keystone_admin_password }}"
+    --os-project-domain-id default
+    --os-user-domain-id default
     token issue
   changed_when: domain_test.rc != 0
   register: domain_test
@@ -51,12 +55,15 @@
 - name: SANITY CHECK Admin user has correct privileges
   shell: >-
     openstack
-    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
+    --os-identity-api-version 3
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357/v3
     --os-project-name admin
     --os-username admin
     --os-auth-type password
     --os-password "{{ keystone_admin_password }}"
-    project list
+    --os-project-domain-id default
+    --os-user-domain-id default
+   project list
   changed_when: admin_test.rc != 0
   register: admin_test
 
@@ -65,12 +72,15 @@
 - name: SANITY CHECK List users
   shell: >-
     openstack
-    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
+    --os-identity-api-version 3
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357/v3
     --os-project-name admin
     --os-username admin
     --os-auth-type password
     --os-password "{{ keystone_admin_password }}"
-    user list
+    --os-project-domain-id default
+    --os-user-domain-id default
+user list
   changed_when: userlist_test.rc != 0
   register: userlist_test
 
@@ -79,12 +89,15 @@
 - name: SANITY CHECK List roles
   shell: >-
     openstack
-    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
+    --os-identity-api-version 3
+    --os-auth-url http://{{ keystone_admin_bind_host }}:35357/v3
     --os-project-name admin
     --os-username admin
     --os-auth-type password
     --os-password "{{ keystone_admin_password }}"
-    role list
+    --os-project-domain-id default
+    --os-user-domain-id default
+ role list
   changed_when: rolelist_test.rc != 0
   register: rolelist_test
 
