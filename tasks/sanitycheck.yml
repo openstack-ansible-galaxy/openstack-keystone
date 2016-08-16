@@ -35,23 +35,6 @@
 
 - debug: var=token_test.stdout_lines
 
-- name: SANITY CHECK Try with domain
-  shell: >-
-    openstack
-    --os-identity-api-version 3
-    --os-auth-url http://{{ keystone_admin_bind_host }}:35357
-    --os-project-name admin
-    --os-username admin
-    --os-auth-type password
-    --os-password "{{ keystone_admin_password }}"
-    --os-project-domain-id default
-    --os-user-domain-id default
-    token issue
-  changed_when: domain_test.rc != 0
-  register: domain_test
-
-- debug: var=domain_test.stdout_lines
-
 - name: SANITY CHECK Admin user has correct privileges
   shell: >-
     openstack
@@ -63,7 +46,7 @@
     --os-password "{{ keystone_admin_password }}"
     --os-project-domain-id default
     --os-user-domain-id default
-   project list
+    project list
   changed_when: admin_test.rc != 0
   register: admin_test
 
@@ -80,7 +63,7 @@
     --os-password "{{ keystone_admin_password }}"
     --os-project-domain-id default
     --os-user-domain-id default
-user list
+    user list
   changed_when: userlist_test.rc != 0
   register: userlist_test
 
@@ -97,7 +80,7 @@ user list
     --os-password "{{ keystone_admin_password }}"
     --os-project-domain-id default
     --os-user-domain-id default
- role list
+    role list
   changed_when: rolelist_test.rc != 0
   register: rolelist_test
 
