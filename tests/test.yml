@@ -89,6 +89,6 @@
           service_type: 'image'
       keystone_endpoints:
         - service_name: 'keystone'
-          public_url: 'http://localhost:5000/v2.0'
-          internal_url: 'http://localhost:5000/v2.0'
-          admin_url: 'http://localhost:35357/v2.0'
+          public_url: 'http://localhost:5000/v3'
+          internal_url: 'http://localhost:5000/v3'
+          admin_url: 'http://localhost:35357/v3'
