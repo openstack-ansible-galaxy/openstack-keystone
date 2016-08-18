@@ -32,9 +32,3 @@
     - 'openstack-selinux'
     - 'python-memcached'
     - 'python-openstackclient'
-
-- name: Stop and disable keystone
-  service:
-    enabled: False
-    name: '{{ keystone_service }}'
-    state: stopped
