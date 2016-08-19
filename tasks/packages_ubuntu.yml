@@ -21,8 +21,6 @@
   apt:
     name: '{{ item }}'
     state: present
-  notify:
-    - Restart webserver
   with_items:
     - 'apache2'
     - 'keystone'

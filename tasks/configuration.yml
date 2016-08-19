@@ -79,6 +79,8 @@
   command: 'keystone-manage db_sync {{ keystone_database_schema_version }}'
   become: True
   become_user: 'keystone'
+  notify:
+    - Restart webserver
   when: keystone_manage_db_version|changed
 
 - name: Create fernet keys

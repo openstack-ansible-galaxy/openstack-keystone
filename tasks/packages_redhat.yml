@@ -21,8 +21,6 @@
   yum:
     name: '{{ item }}'
     state: present
-  notify:
-    - Restart webserver
   with_items:
     - 'MySQL-python'
     - 'httpd'
