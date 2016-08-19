@@ -23,6 +23,12 @@
 - include: packages_redhat.yml
   when: ansible_os_family == 'RedHat'
 
+- name: Stop and disable keystone
+  service:
+    enabled: False
+    name: '{{ keystone_service }}'
+    state: stopped
+
 - name: Start and enable memcached
   service:
     enabled: True

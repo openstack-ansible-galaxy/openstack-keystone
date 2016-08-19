@@ -17,22 +17,6 @@
 # limitations under the License.
 #
 
-- name: Disable keystone service from starting automatically (upstart)
-  lineinfile:
-    dest: '/etc/init/keystone.override'
-    create: True
-    line: 'manual'
-  when:
-    ansible_distribution_release == 'trusty'
-
-- name: Disable keystone service from starting automatically (systemd)
-  file:
-    dest: '/etc/systemd/system/keystone.service'
-    src: '/dev/null'
-    state: link
-  when:
-    ansible_distribution_release == 'xenial'
-
 - name: Install keystone-related packages
   apt:
     name: '{{ item }}'
