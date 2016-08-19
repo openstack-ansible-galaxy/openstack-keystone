@@ -28,6 +28,9 @@
     - Restart webserver
   with_items:
     - section: 'DEFAULT'
+      option: 'debug'
+      value: '{{ keystone_verbose }}'
+    - section: 'DEFAULT'
       option: 'admin_token'
       value: '{{ keystone_admin_token }}'
     - section: 'DEFAULT'
@@ -97,13 +100,3 @@
     path: '/etc/keystone/'
     recurse: True
   when: ansible_os_family == 'RedHat'
-
-- name: Configure keystone to be verbose
-  ini_file:
-    dest: '/etc/keystone/keystone.conf'
-    section: 'DEFAULT'
-    option: 'debug'
-    value: True
-  notify:
-    - Restart webserver
-  when: keystone_verbose
