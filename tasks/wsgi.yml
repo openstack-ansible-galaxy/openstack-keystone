@@ -2,15 +2,15 @@
 
 - name: WSGI Tell apache to use the hostname as the servername
   lineinfile:
-    dest: '{{ webserver_conf_path }}'
-    line: 'ServerName {{ keystone_hostname }}'
+    dest: '{{ openstack_keystone_webserver_conf_path }}'
+    line: 'ServerName {{ openstack_keystone_hostname }}'
   notify:
     - Restart webserver
 
 - name: WSGI Create the WSGI Keystone configuration file
   template:
     src: 'wsgi-keystone.conf'
-    dest: '{{ webserver_new_conf_dir_path }}/wsgi-keystone.conf'
+    dest: '{{ openstack_keystone_webserver_new_conf_dir_path }}/wsgi-keystone.conf'
   notify:
     - Restart webserver
 

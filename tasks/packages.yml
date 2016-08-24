@@ -26,17 +26,17 @@
 - name: Stop and disable keystone
   service:
     enabled: False
-    name: '{{ keystone_service }}'
+    name: '{{ openstack_keystone_service }}'
     state: stopped
 
 - name: Start and enable memcached
   service:
     enabled: True
-    name: '{{ memcached_service }}'
+    name: '{{ openstack_keystone_memcached_service }}'
     state: started
 
 - name: Start and enable apache
   service:
     enabled: True
-    name: '{{ webserver_service }}'
+    name: '{{ openstack_keystone_webserver_service }}'
     state: started

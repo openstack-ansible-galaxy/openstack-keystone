@@ -20,5 +20,5 @@
 
 - name: Restart webserver
   service:
-    name: '{{ webserver_service }}'
+    name: '{{ openstack_keystone_webserver_service }}'
     state: restarted

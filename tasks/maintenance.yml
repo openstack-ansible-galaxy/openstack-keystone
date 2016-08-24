@@ -22,4 +22,4 @@
   file:
     path: '/var/lib/keystone/keystone.db'
     state: absent
-  when: keystone_remove_sqlite_db
+  when: openstack_keystone_remove_sqlite_db

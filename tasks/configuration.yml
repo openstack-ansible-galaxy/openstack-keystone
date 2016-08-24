@@ -29,62 +29,62 @@
   with_items:
     - section: 'DEFAULT'
       option: 'debug'
-      value: '{{ keystone_verbose }}'
+      value: '{{ openstack_keystone_verbose }}'
     - section: 'DEFAULT'
       option: 'admin_token'
-      value: '{{ keystone_admin_token }}'
+      value: '{{ openstack_keystone_admin_token }}'
     - section: 'DEFAULT'
       option: 'log_dir'
-      value: '{{ keystone_log_dir }}'
+      value: '{{ openstack_keystone_log_dir }}'
     - section: 'catalog'
       option: 'caching'
-      value: '{{ keystone_catalog_caching|default(True) }}'
+      value: '{{ openstack_keystone_catalog_caching|default(True) }}'
     - section: 'database'
       option: 'connection'
-      value: '{{ keystone_database_url }}'
+      value: '{{ openstack_keystone_database_url }}'
     - section: 'domain_config'
       option: 'caching'
-      value: '{{ keystone_domain_config_caching|default(True) }}'
+      value: '{{ openstack_keystone_domain_config_caching|default(True) }}'
     - section: 'identity'
       option: 'caching'
-      value: '{{ keystone_identity_caching|default(True) }}'
+      value: '{{ openstack_keystone_identity_caching|default(True) }}'
     - section: 'memcache'
       option: 'servers'
-      value: "{{ ','.join(keystone_memcached_servers) }}"
+      value: "{{ ','.join(openstack_keystone_memcached_servers) }}"
     - section: 'token'
       option: 'provider'
       value: 'fernet'
     - section: 'resource'
       option: 'caching'
-      value: '{{ keystone_resource_caching|default(True) }}'
+      value: '{{ openstack_keystone_resource_caching|default(True) }}'
     - section: 'revoke'
       option: 'driver'
       value: 'sql'
     - section: 'revoke'
       option: 'caching'
-      value: '{{ keystone_revoke_caching|default(True) }}'
+      value: '{{ openstack_keystone_revoke_caching|default(True) }}'
     - section: 'role'
       option: 'caching'
-      value: '{{ keystone_role_caching|default(True) }}'
+      value: '{{ openstack_keystone_role_caching|default(True) }}'
     - section: 'token'
       option: 'caching'
-      value: '{{ keystone_token_caching|default(True) }}'
+      value: '{{ openstack_keystone_token_caching|default(True) }}'
 
 - name: Get current keystone database version
   command: 'keystone-manage db_version'
   always_run: True
   become: True
   become_user: 'keystone'
-  changed_when: keystone_manage_db_version.stdout|int != keystone_database_schema_version
-  register: keystone_manage_db_version
+  changed_when: openstack_keystone_manage_db_version.stdout|int != openstack_keystone_database_schema_version
+  register: openstack_keystone_manage_db_version
 
 - name: Migrate keystone database to desired version
-  command: 'keystone-manage db_sync {{ keystone_database_schema_version }}'
+  command: 'keystone-manage db_sync {{ openstack_keystone_database_schema_version }}'
   become: True
   become_user: 'keystone'
   notify:
     - Restart webserver
-  when: keystone_manage_db_version|changed
+  when: openstack_keystone_manage_db_version|changed
 
 - name: Create fernet keys
   command: >-
