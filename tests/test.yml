@@ -49,22 +49,22 @@
       when: ansible_os_family == 'RedHat'
 
     - role: openstack-keystone
-      keystone_run_sanity_check: True
-      keystone_admin_token: 'os token'
-      keystone_admin_password: 'admin password'
-      keystone_admin_bind_host: 'localhost'
-      keystone_bind_host: 'localhost'
-      keystone_database_url: 'mysql+pymysql://keystone:keystonepassword@localhost/keystone'
-      keystone_tenants:
+      openstack_keystone_run_sanity_check: True
+      openstack_keystone_admin_token: 'os token'
+      openstack_keystone_admin_password: 'admin password'
+      openstack_keystone_admin_bind_host: 'localhost'
+      openstack_keystone_bind_host: 'localhost'
+      openstack_keystone_database_url: 'mysql+pymysql://keystone:keystonepassword@localhost/keystone'
+      openstack_keystone_tenants:
         - name: 'admin'
           description: 'Admin tenant'
         - name: 'service'
           description: 'Service tenant'
         - name: 'demo'
           description: 'Demo tenant'
-      keystone_users:
+      openstack_keystone_users:
         - name: 'admin'
-          password: '{{ keystone_admin_password }}'
+          password: '{{ openstack_keystone_admin_password }}'
           tenant: 'admin'
         - name: 'demo'
           password: 'demo password'
@@ -72,7 +72,7 @@
         - name: 'glance'
           password: 'glance password'
           tenant: 'service'
-      keystone_roles:
+      openstack_keystone_roles:
         - name: 'admin'
           user: 'admin'
           tenant: 'admin'
@@ -82,12 +82,12 @@
         - name: 'admin'
           user: 'glance'
           tenant: 'service'
-      keystone_services:
+      openstack_keystone_services:
         - name: 'keystone'
           service_type: 'identity'
         - name: 'glance'
           service_type: 'image'
-      keystone_endpoints:
+      openstack_keystone_endpoints:
         - service_name: 'keystone'
           public_url: 'http://localhost:5000/v3'
           internal_url: 'http://localhost:5000/v3'

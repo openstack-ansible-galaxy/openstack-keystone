@@ -32,4 +32,4 @@
 - include: roles.yml
 
 - include: sanitycheck.yml
-  when: keystone_run_sanity_check
+  when: openstack_keystone_run_sanity_check

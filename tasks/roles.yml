@@ -23,11 +23,11 @@
     role: '{{ item.name }}'
     user: '{{ item.user }}'
     tenant: '{{ item.tenant }}'
-    endpoint: '{{ keystone_protocol }}://{{ keystone_hostname }}:{{ keystone_admin_port }}/{{ keystone_api_version }}'
-    token: '{{ keystone_admin_token }}'
+    endpoint: '{{ openstack_keystone_protocol }}://{{ openstack_keystone_hostname }}:{{ openstack_keystone_admin_port }}/{{ openstack_keystone_api_version }}'
+    token: '{{ openstack_keystone_admin_token }}'
     state: '{{ item.state|default("present") }}'
-  delay: '{{ keystone_api_retries_delay }}'
+  delay: '{{ openstack_keystone_api_retries_delay }}'
   register: result
-  retries: '{{ keystone_api_retries }}'
+  retries: '{{ openstack_keystone_api_retries }}'
   until: not result|failed
-  with_items: '{{ keystone_roles }}'
+  with_items: '{{ openstack_keystone_roles }}'
