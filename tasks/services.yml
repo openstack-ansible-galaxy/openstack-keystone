@@ -1,0 +1,16 @@
+---
+
+- name: Stop and disable keystone
+  service:
+    enabled: False
+    name: '{{ openstack_keystone_service }}'
+    state: stopped
+
+- name: Start and enable memcached and webserver
+  service:
+    enabled: True
+    name: '{{ item }}'
+    state: started
+  with_items:
+    - '{{ openstack_keystone_memcached_service }}'
+    - '{{ openstack_keystone_webserver_service }}'
