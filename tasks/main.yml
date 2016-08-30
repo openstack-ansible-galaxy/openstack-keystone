@@ -19,9 +19,17 @@
 #
 
 - include: facts.yml
-- include: packages.yml
+
+- include: packages_ubuntu.yml
+  when: ansible_os_family == 'Debian'
+
+- include: packages_redhat.yml
+  when: ansible_os_family == 'RedHat'
+
 - include: configuration.yml
-- include: wsgi.yml
+- include: configuration_wsgi.yml
+
+- include: services.yml
 
 - meta: flush_handlers
 
