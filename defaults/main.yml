@@ -36,7 +36,6 @@ openstack_keystone_default_region: 'RegionOne'
 
 # Database
 openstack_keystone_database_url: 'sqlite:////var/lib/keystone/keystone.db'
-openstack_keystone_database_schema_version: 96
 openstack_keystone_remove_sqlite_db: False
 
 # Memcached

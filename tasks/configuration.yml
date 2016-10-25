@@ -70,16 +70,26 @@
       option: 'caching'
       value: '{{ openstack_keystone_token_caching|default(True) }}'
 
+- name: Get latest keystone database version
+  shell: >-
+    ls {{ openstack_keystone_database_migration_repository }}
+    | grep '^[0-9]\{3\}_' | sort -n | tail -n 1 | awk -F '_' '{ print $1; }'
+  always_run: True
+  changed_when: False
+  register: openstack_keystone_database_schema_version
+
 - name: Get current keystone database version
   command: 'keystone-manage db_version'
   always_run: True
   become: True
   become_user: 'keystone'
-  changed_when: openstack_keystone_manage_db_version.stdout|int != openstack_keystone_database_schema_version
+  changed_when: >-
+    openstack_keystone_manage_db_version.stdout|int
+    != openstack_keystone_database_schema_version.stdout|int
   register: openstack_keystone_manage_db_version
 
 - name: Migrate keystone database to desired version
-  command: 'keystone-manage db_sync {{ openstack_keystone_database_schema_version }}'
+  command: 'keystone-manage db_sync {{ openstack_keystone_database_schema_version.stdout }}'
   become: True
   become_user: 'keystone'
   notify:
