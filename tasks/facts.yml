@@ -24,6 +24,8 @@
     openstack_keystone_webserver_conf_path: '/etc/apache2/apache2.conf'
     openstack_keystone_webserver_new_conf_dir_path: '/etc/apache2/sites-available'
     openstack_keystone_memcached_service: 'memcached'
+    openstack_keystone_database_migration_repository: >-
+      '/usr/lib/python2.7/dist-packages/keystone/common/sql/migrate_repo/versions'
   when: ansible_os_family == 'Debian'
 
 - name: Set facts for RedHat family
@@ -33,4 +35,6 @@
     openstack_keystone_webserver_conf_path: '/etc/httpd/conf/httpd.conf'
     openstack_keystone_webserver_new_conf_dir_path: '/etc/httpd/conf.d'
     openstack_keystone_memcached_service: 'memcached.service'
+    openstack_keystone_database_migration_repository: >-
+      '/usr/lib/python2.7/site-packages/keystone/common/sql/migrate_repo/versions'
   when: ansible_os_family == 'RedHat'
