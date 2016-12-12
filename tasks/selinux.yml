@@ -1,0 +1,11 @@
+---
+
+- name: SELINUX Allow apache ports
+  seport:
+    ports: '{{ item }}'
+    proto: tcp
+    setype: http_port_t
+    state: present
+  with_items:
+    - openstack_neutron_controller_keystone_port
+    - openstack_neutron_controller_keystone_admin_port

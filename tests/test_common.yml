@@ -26,4 +26,5 @@
         - ansible_virtualization_type != 'docker'
 
   roles:
-    - openstack-repo
+    - role: openstack-repo
+      openstack_version: mitaka

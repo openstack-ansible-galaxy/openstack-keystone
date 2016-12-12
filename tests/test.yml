@@ -11,13 +11,6 @@
         mysql_root_password: 'mysqlpassword'
         mysql_bind_address: '0.0.0.0'
         mysql_innodb_file_per_table: 'innodb_file_per_table'
-        mysql_daemon: 'mysql'
-        mysql_log_error: '/var/log/mysql/error.log'
-        mysql_pid_file: '/var/run/mysqld/mysqld.pid'
-        mysql_packages:
-          - 'mariadb-client'
-          - 'mariadb-server'
-          - 'python-mysqldb'
         mysql_databases:
           - name: 'keystone'
         mysql_users:
