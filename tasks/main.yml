@@ -26,6 +26,11 @@
 - include: packages_redhat.yml
   when: ansible_os_family == 'RedHat'
 
+- include: selinux.yml
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_selinux
+
 - include: configuration.yml
 - include: configuration_wsgi.yml
 
