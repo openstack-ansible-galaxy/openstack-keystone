@@ -1,0 +1,14 @@
+---
+
+- name: Set allow_ports fact
+  set_fact:
+    allow_seports:
+      - '{{ openstack_keystone_port }}'
+      - '{{ openstack_keystone_admin_port }}'
+
+- name: SELINUX Allow apache ports
+  seport:
+    ports: "{{ allow_seports | join(',') }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
