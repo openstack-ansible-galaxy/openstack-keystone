@@ -1,7 +1,10 @@
 ---
 
-- name: SELINUX enable openstack boolean
+- name: SELINUX enable openstack boolean(s)
   seboolean:
-    name: 'httpd_use_openstack'
+    name: '{{ item }}'
     state: yes
     persistent: yes
+  with_items:
+    - httpd_can_network_connect
+    - httpd_use_openstack
