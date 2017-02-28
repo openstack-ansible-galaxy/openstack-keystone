@@ -1,58 +1,12 @@
 ---
 
 - include: test_common.yml
+- include: mysql.yml
 
 - hosts: all
   become: True
 
-  pre_tasks:
-    - name: Set facts for mysql role on Debian based system
-      set_fact:
-        mysql_root_password: 'mysqlpassword'
-        mysql_bind_address: '0.0.0.0'
-        mysql_innodb_file_per_table: 'innodb_file_per_table'
-        mysql_packages:
-          - mysql-client-5.6
-          - mysql-server-5.6
-          - python-mysqldb
-        mysql_databases:
-          - name: 'keystone'
-        mysql_users:
-          - name: 'keystone'
-            password: 'keystonepassword'
-            priv: 'keystone.*:ALL'
-            host: '%'
-          - name: 'keystone'
-            password: 'keystonepassword'
-            priv: 'keystone.*:ALL'
-            host: 'localhost'
-      when: ansible_os_family == 'Debian'
-
-    - name: Set facts for mysql role on RedHat based system
-      set_fact:
-        mysql_root_password: 'mysqlpassword'
-        mysql_bind_address: '0.0.0.0'
-        mysql_innodb_file_per_table: 'innodb_file_per_table'
-        mysql_daemon: 'mariadb'
-        mysql_socket: '/var/lib/mysql/mysql.sock'
-        mysql_log_error: '/var/log/mariadb/mariadb.log'
-        mysql_syslog_tag: 'mariadb'
-        mysql_pid_file: '/var/run/mariadb/mariadb.pid'
-        mysql_databases:
-          - name: 'keystone'
-        mysql_users:
-          - name: 'keystone'
-            password: 'keystonepassword'
-            priv: 'keystone.*:ALL'
-            host: '%'
-          - name: 'keystone'
-            password: 'keystonepassword'
-            priv: 'keystone.*:ALL'
-            host: 'localhost'
-      when: ansible_os_family == 'RedHat'
-
   roles:
-    - role: mysql
 
     - role: openstack-keystone
       openstack_keystone_run_sanity_check: True
