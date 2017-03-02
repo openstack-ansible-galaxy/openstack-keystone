@@ -23,7 +23,7 @@
     role: '{{ item.name }}'
     user: '{{ item.user }}'
     tenant: '{{ item.tenant }}'
-    endpoint: '{{ openstack_keystone_protocol }}://{{ openstack_keystone_hostname }}:{{ openstack_keystone_admin_port }}/{{ openstack_keystone_api_version }}'
+    endpoint: '{{ openstack_keystone_protocol }}://{{ openstack_keystone_hostname }}:{{ openstack_keystone_admin_port }}/{{ openstack_keystone_legacy_api_version }}'
     token: '{{ openstack_keystone_admin_token }}'
     state: '{{ item.state|default("present") }}'
   delay: '{{ openstack_keystone_api_retries_delay }}'

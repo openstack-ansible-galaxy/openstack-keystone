@@ -24,7 +24,7 @@
     password: '{{ item.password }}'
     tenant: '{{ item.tenant }}'
     email: '{{ item.email|default("nobody@localhost") }}'
-    endpoint: '{{ openstack_keystone_protocol }}://{{ openstack_keystone_hostname }}:{{ openstack_keystone_admin_port }}/{{ openstack_keystone_api_version }}'
+    endpoint: '{{ openstack_keystone_protocol }}://{{ openstack_keystone_hostname }}:{{ openstack_keystone_admin_port }}/{{ openstack_keystone_legacy_api_version }}'
     token: '{{ openstack_keystone_admin_token }}'
     state: '{{ item.state|default("present") }}'
   delay: '{{ openstack_keystone_api_retries_delay }}'
@@ -36,5 +36,7 @@
 - name: Create keystonerc
   template:
     src: keystonerc.j2
-    dst: '{{ ansible_env.HOME}}'
+    dest: '{{ ansible_env.HOME}}/keystonerc_{{ item.name }}'
   with_items: '{{ openstack_keystone_users }}'
+  when:
+    - "'{{ item.tenant }}' != 'service'"
