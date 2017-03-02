@@ -32,3 +32,9 @@
   retries: '{{ openstack_keystone_api_retries }}'
   until: not result|failed
   with_items: '{{ openstack_keystone_users }}'
+
+- name: Create keystonerc
+  template:
+    src: keystonerc.j2
+    dst: '{{ ansible_env.HOME}}'
+  with_items: '{{ openstack_keystone_users }}'

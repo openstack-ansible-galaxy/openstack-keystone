@@ -47,7 +47,7 @@ openstack_keystone_wsgi_public_path: '/usr/bin/keystone-wsgi-public'
 openstack_keystone_wsgi_admin_path: '/usr/bin/keystone-wsgi-admin'
 
 # Misc
-openstack_keystone_api_version: 'v2.0'
+openstack_keystone_api_version: 'v3'
 openstack_keystone_api_retries: 3
 openstack_keystone_api_retries_delay: 5
 openstack_keystone_verbose: False
