@@ -1,0 +1,10 @@
+# Keystone creds
+export OS_USERNAME='{{ item.name }}'
+export OS_PASSWORD='{{ item.password }}'
+export OS_AUTH_URL='{{ openstack_keystone_protocol }}://{{ openstack_keystone_hostname }}:{{ openstack_keystone_admin_port }}/{{ openstack_keystone_api_version }}'
+export PS1='[\u@\h \W(keystone_{{ item.name }})]\$ '
+export OS_TENANT_NAME='{{ item.tenant }}'
+export OS_USER_DOMAIN_NAME='{{ openstack_keystone_user_domain|default("default") }}'
+export OS_PROJECT_DOMAIN_NAME='{{ openstack_keystone_project_domain|default("default") }}'
+export OS_REGION_NAME='{{ openstack_keystone_default_region }}'
+export OS_IDENTITY_API_VERSION='{{ openstack_keystone_api_version.split("v")[1]  }}'
