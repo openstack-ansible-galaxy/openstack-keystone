@@ -32,7 +32,6 @@
     - ansible_selinux
 
 - include: configuration.yml
-- include: configuration_wsgi.yml
 
 - include: services.yml
 
